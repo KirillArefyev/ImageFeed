@@ -13,6 +13,7 @@
 		ED0E067E2AFC10760061E1AB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ED0E067C2AFC10760061E1AB /* Main.storyboard */; };
 		ED0E06802AFC10770061E1AB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ED0E067F2AFC10770061E1AB /* Assets.xcassets */; };
 		ED0E06832AFC10770061E1AB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ED0E06812AFC10770061E1AB /* LaunchScreen.storyboard */; };
+		EDD423EC2AFF77EC00D93002 /* UIColor+Extentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD423EB2AFF77EC00D93002 /* UIColor+Extentions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		ED0E067F2AFC10770061E1AB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		ED0E06822AFC10770061E1AB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		ED0E06842AFC10770061E1AB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EDD423EB2AFF77EC00D93002 /* UIColor+Extentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extentions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,15 +58,40 @@
 		ED0E06752AFC10760061E1AB /* ImageFeed */ = {
 			isa = PBXGroup;
 			children = (
+				EDD423EE2AFF7C1F00D93002 /* Presentation */,
+				EDD423EA2AFF76F800D93002 /* Extentions */,
+				EDD423E92AFF76DE00D93002 /* Resources */,
 				ED0E06762AFC10760061E1AB /* AppDelegate.swift */,
 				ED0E06782AFC10760061E1AB /* SceneDelegate.swift */,
-				ED0E067A2AFC10760061E1AB /* ViewController.swift */,
-				ED0E067C2AFC10760061E1AB /* Main.storyboard */,
-				ED0E067F2AFC10770061E1AB /* Assets.xcassets */,
-				ED0E06812AFC10770061E1AB /* LaunchScreen.storyboard */,
-				ED0E06842AFC10770061E1AB /* Info.plist */,
 			);
 			path = ImageFeed;
+			sourceTree = "<group>";
+		};
+		EDD423E92AFF76DE00D93002 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				ED0E06812AFC10770061E1AB /* LaunchScreen.storyboard */,
+				ED0E067F2AFC10770061E1AB /* Assets.xcassets */,
+				ED0E06842AFC10770061E1AB /* Info.plist */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		EDD423EA2AFF76F800D93002 /* Extentions */ = {
+			isa = PBXGroup;
+			children = (
+				EDD423EB2AFF77EC00D93002 /* UIColor+Extentions.swift */,
+			);
+			path = Extentions;
+			sourceTree = "<group>";
+		};
+		EDD423EE2AFF7C1F00D93002 /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				ED0E067A2AFC10760061E1AB /* ViewController.swift */,
+				ED0E067C2AFC10760061E1AB /* Main.storyboard */,
+			);
+			path = Presentation;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -138,6 +165,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EDD423EC2AFF77EC00D93002 /* UIColor+Extentions.swift in Sources */,
 				ED0E067B2AFC10760061E1AB /* ViewController.swift in Sources */,
 				ED0E06772AFC10760061E1AB /* AppDelegate.swift in Sources */,
 				ED0E06792AFC10760061E1AB /* SceneDelegate.swift in Sources */,
@@ -289,15 +317,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 6QYL26XQ4N;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = ImageFeed/Info.plist;
+				INFOPLIST_FILE = ImageFeed/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIStatusBarHidden = NO;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -320,15 +348,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 6QYL26XQ4N;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = ImageFeed/Info.plist;
+				INFOPLIST_FILE = ImageFeed/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIStatusBarHidden = NO;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
