@@ -15,6 +15,7 @@
 		ED0E06832AFC10770061E1AB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ED0E06812AFC10770061E1AB /* LaunchScreen.storyboard */; };
 		ED44CF2C2AFFC4DA00EB20AA /* ImagesList+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED44CF2B2AFFC4DA00EB20AA /* ImagesList+Extensions.swift */; };
 		ED44CF2E2AFFCB1C00EB20AA /* ImagesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED44CF2D2AFFCB1C00EB20AA /* ImagesListCell.swift */; };
+		ED51539C2B03B91E0072410E /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED51539B2B03B91E0072410E /* Date+Extension.swift */; };
 		EDD423EC2AFF77EC00D93002 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD423EB2AFF77EC00D93002 /* UIColor+Extensions.swift */; };
 /* End PBXBuildFile section */
 
@@ -29,6 +30,7 @@
 		ED0E06842AFC10770061E1AB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		ED44CF2B2AFFC4DA00EB20AA /* ImagesList+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImagesList+Extensions.swift"; sourceTree = "<group>"; };
 		ED44CF2D2AFFCB1C00EB20AA /* ImagesListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListCell.swift; sourceTree = "<group>"; };
+		ED51539B2B03B91E0072410E /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		EDD423EB2AFF77EC00D93002 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -62,7 +64,7 @@
 		ED0E06752AFC10760061E1AB /* ImageFeed */ = {
 			isa = PBXGroup;
 			children = (
-				EDD423EA2AFF76F800D93002 /* Extensions */,
+				EDD423EA2AFF76F800D93002 /* Helpers */,
 				EDD423EE2AFF7C1F00D93002 /* ImagesList */,
 				EDD423E92AFF76DE00D93002 /* Resources */,
 				ED0E06762AFC10760061E1AB /* AppDelegate.swift */,
@@ -82,13 +84,14 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		EDD423EA2AFF76F800D93002 /* Extensions */ = {
+		EDD423EA2AFF76F800D93002 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
 				EDD423EB2AFF77EC00D93002 /* UIColor+Extensions.swift */,
+				ED51539B2B03B91E0072410E /* Date+Extension.swift */,
 				ED44CF2B2AFFC4DA00EB20AA /* ImagesList+Extensions.swift */,
 			);
-			path = Extensions;
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		EDD423EE2AFF7C1F00D93002 /* ImagesList */ = {
@@ -175,6 +178,7 @@
 				ED0E067B2AFC10760061E1AB /* ImagesListViewController.swift in Sources */,
 				ED44CF2C2AFFC4DA00EB20AA /* ImagesList+Extensions.swift in Sources */,
 				ED0E06772AFC10760061E1AB /* AppDelegate.swift in Sources */,
+				ED51539C2B03B91E0072410E /* Date+Extension.swift in Sources */,
 				ED0E06792AFC10760061E1AB /* SceneDelegate.swift in Sources */,
 				ED44CF2E2AFFCB1C00EB20AA /* ImagesListCell.swift in Sources */,
 			);
