@@ -28,8 +28,9 @@
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="165"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="3JR-Wf-s47" userLabel="Image">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="3JR-Wf-s47" userLabel="Cell Image">
                                                     <rect key="frame" x="16" y="4" width="361" height="157"/>
+                                                    <color key="backgroundColor" name="YP Background"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                             <integer key="value" value="16"/>
@@ -39,9 +40,22 @@
                                                 </imageView>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zxi-0I-Gvk" userLabel="Favorite Button">
                                                     <rect key="frame" x="333" y="4" width="44" height="44"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                     <state key="normal" image="No Active"/>
                                                 </button>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Z2q-fC-Qk3" userLabel="Gradient View">
+                                                    <rect key="frame" x="16" y="131" width="361" height="30"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="30" id="67w-E7-LJW"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                            <integer key="value" value="16"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="27 августа 2022" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zKt-MS-tBS" userLabel="Date Label">
                                                     <rect key="frame" x="24.000000000000007" y="137" width="101.66666666666669" height="16"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
@@ -52,17 +66,26 @@
                                             <color key="backgroundColor" name="YP Black"/>
                                             <constraints>
                                                 <constraint firstItem="Zxi-0I-Gvk" firstAttribute="top" secondItem="3JR-Wf-s47" secondAttribute="top" id="36E-sb-RAN"/>
+                                                <constraint firstItem="Z2q-fC-Qk3" firstAttribute="leading" secondItem="3JR-Wf-s47" secondAttribute="leading" id="3Sy-6w-PJ8"/>
                                                 <constraint firstItem="3JR-Wf-s47" firstAttribute="leading" secondItem="CCR-SL-m5A" secondAttribute="leading" constant="16" id="BS5-dz-Osv"/>
                                                 <constraint firstItem="Zxi-0I-Gvk" firstAttribute="trailing" secondItem="3JR-Wf-s47" secondAttribute="trailing" id="DkC-iQ-zVh"/>
                                                 <constraint firstAttribute="trailing" secondItem="3JR-Wf-s47" secondAttribute="trailing" constant="16" id="ESY-nk-Bxf"/>
                                                 <constraint firstItem="3JR-Wf-s47" firstAttribute="top" secondItem="CCR-SL-m5A" secondAttribute="top" constant="4" id="FWM-U1-yMr"/>
                                                 <constraint firstItem="3JR-Wf-s47" firstAttribute="bottom" secondItem="zKt-MS-tBS" secondAttribute="bottom" constant="8" id="MDo-VO-gnN"/>
                                                 <constraint firstItem="zKt-MS-tBS" firstAttribute="leading" secondItem="3JR-Wf-s47" secondAttribute="leading" constant="8" id="Umi-f0-wHa"/>
+                                                <constraint firstItem="Z2q-fC-Qk3" firstAttribute="trailing" secondItem="3JR-Wf-s47" secondAttribute="trailing" id="Vj4-yu-qH3"/>
                                                 <constraint firstAttribute="bottom" secondItem="3JR-Wf-s47" secondAttribute="bottom" constant="4" id="kBP-pm-jrc"/>
                                                 <constraint firstItem="3JR-Wf-s47" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="zKt-MS-tBS" secondAttribute="trailing" constant="8" id="lg7-52-6zY"/>
+                                                <constraint firstItem="Z2q-fC-Qk3" firstAttribute="bottom" secondItem="3JR-Wf-s47" secondAttribute="bottom" id="pf6-9q-11h"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" name="YP Black"/>
+                                        <connections>
+                                            <outlet property="cellImage" destination="3JR-Wf-s47" id="Dmu-bk-E5i"/>
+                                            <outlet property="dateLabel" destination="zKt-MS-tBS" id="Rut-XE-b8y"/>
+                                            <outlet property="favoriteButton" destination="Zxi-0I-Gvk" id="Pob-rm-paf"/>
+                                            <outlet property="gradientView" destination="Z2q-fC-Qk3" id="S3K-ed-hvX"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
@@ -81,7 +104,7 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="tablleView" destination="FmZ-mB-yQK" id="XQA-WR-bwA"/>
+                        <outlet property="tableView" destination="FmZ-mB-yQK" id="RYr-1a-2q9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -92,6 +115,9 @@
     <resources>
         <image name="0" width="200" height="132"/>
         <image name="No Active" width="44" height="44"/>
+        <namedColor name="YP Background">
+            <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="YP Black">
             <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
