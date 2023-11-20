@@ -9,6 +9,7 @@ import UIKit
 
 final class ImagesListCell: UITableViewCell {
     static let reuseIdentifier = "ImagesListCell"
+    
     @IBOutlet var cellImage: UIImageView!
     @IBOutlet var favoriteButton: UIButton!
     @IBOutlet var dateLabel: UILabel!
@@ -18,7 +19,7 @@ final class ImagesListCell: UITableViewCell {
         }
     }
     
-    private func  makeGradientView() {
+    private func makeGradientView() {
         let gradient = CAGradientLayer()
         let firstColor = UIColor.ifBlack.withAlphaComponent(0.2).cgColor
         let secondColor = UIColor.ifBlack.withAlphaComponent(0.0).cgColor
