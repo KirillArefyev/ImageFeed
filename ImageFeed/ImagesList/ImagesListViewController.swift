@@ -8,7 +8,7 @@
 import UIKit
 
 final class ImagesListViewController: UIViewController {
-    // MARK: - Outlets
+    // MARK: - IB Outlets
     @IBOutlet private var tableView: UITableView!
     // MARK: - Propierties
     private let photosName: [String] = Array(0..<20).map{ "\($0)" }
@@ -29,7 +29,7 @@ extension ImagesListViewController {
         cell.dateLabel.text = Date().dateString
         
         let isLiked = indexPath.row % 2 == 0
-        let favoriteImage = isLiked ? UIImage(named: "Active") : UIImage(named: "No Active")
+        let favoriteImage = isLiked ? UIImage(named: "favorite_active") : UIImage(named: "favorite_no_active")
         cell.favoriteButton.setImage(favoriteImage, for: .normal)
     }
 }

@@ -8,17 +8,13 @@
 import UIKit
 
 final class ProfileViewController: UIViewController {
-    // MARK: - Outlets
+    // MARK: - IB Outlets
     @IBOutlet private var userPhotoView: UIImageView!
     @IBOutlet private var userNameLabel: UILabel!
     @IBOutlet private var loginLabel: UILabel!
     @IBOutlet private var descriptionLabel: UILabel!
     @IBOutlet private var exitButton: UIButton!
-    // MARK: - Lifecycle
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    // MARK: - Actions
+    // MARK: - IB Actions
     @IBAction private func exitButtonTapped(_ sender: UIButton) {
     }
 }
