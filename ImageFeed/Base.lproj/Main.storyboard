@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22155" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22155" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Oo3-mp-GQo">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -111,15 +111,98 @@
             </objects>
             <point key="canvasLocation" x="109.16030534351144" y="-2.8169014084507045"/>
         </scene>
+        <!--Profile-->
+        <scene sceneID="J93-1I-TuP">
+            <objects>
+                <viewController title="Profile" id="Oo3-mp-GQo" userLabel="Profile" customClass="ProfileViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Fk0-15-vuT">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="User Photo" translatesAutoresizingMaskIntoConstraints="NO" id="wyg-8O-E7p" userLabel="Photo">
+                                <rect key="frame" x="16" y="91" width="70" height="70"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="70" id="4Dp-yI-cTu"/>
+                                    <constraint firstAttribute="height" constant="70" id="gIh-Hb-sE7"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layout.cornerRadius">
+                                        <integer key="value" value="61"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jpm-lN-ZKJ" userLabel="Exit Button">
+                                <rect key="frame" x="333" y="104" width="44" height="44"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="Exit"/>
+                                <connections>
+                                    <action selector="exitButtonTapped:" destination="Oo3-mp-GQo" eventType="touchUpInside" id="ToH-pJ-MCy"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Екатерина Новикова" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HhG-CL-euJ" userLabel="Name Label">
+                                <rect key="frame" x="16" y="169" width="361" height="27.666666666666657"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="23"/>
+                                <color key="textColor" name="YP White"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@ekaterina_nov" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mQ5-LN-zGZ" userLabel="Login Label">
+                                <rect key="frame" x="16" y="204.66666666666666" width="361" height="15.666666666666657"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <color key="textColor" name="YP Gray"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hello, world!" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JHg-1u-mhz" userLabel="Description Label">
+                                <rect key="frame" x="16" y="228.33333333333334" width="361" height="15.666666666666657"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <color key="textColor" name="YP White"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="FMe-VJ-YzA"/>
+                        <color key="backgroundColor" name="YP Black"/>
+                        <constraints>
+                            <constraint firstItem="mQ5-LN-zGZ" firstAttribute="leading" secondItem="HhG-CL-euJ" secondAttribute="leading" id="1hc-FU-QN4"/>
+                            <constraint firstItem="Jpm-lN-ZKJ" firstAttribute="top" secondItem="FMe-VJ-YzA" secondAttribute="top" constant="45" id="37d-5F-op0"/>
+                            <constraint firstItem="FMe-VJ-YzA" firstAttribute="trailing" secondItem="Jpm-lN-ZKJ" secondAttribute="trailing" constant="16" id="Adb-UR-CTt"/>
+                            <constraint firstItem="wyg-8O-E7p" firstAttribute="leading" secondItem="FMe-VJ-YzA" secondAttribute="leading" constant="16" id="D7Z-9I-WEF"/>
+                            <constraint firstItem="HhG-CL-euJ" firstAttribute="top" secondItem="wyg-8O-E7p" secondAttribute="bottom" constant="8" id="HIQ-ln-zni"/>
+                            <constraint firstItem="wyg-8O-E7p" firstAttribute="top" secondItem="FMe-VJ-YzA" secondAttribute="top" constant="32" id="TNu-qI-XRk"/>
+                            <constraint firstItem="HhG-CL-euJ" firstAttribute="trailing" secondItem="JHg-1u-mhz" secondAttribute="trailing" id="a1e-PK-Bt1"/>
+                            <constraint firstItem="mQ5-LN-zGZ" firstAttribute="top" secondItem="HhG-CL-euJ" secondAttribute="bottom" constant="8" id="gGA-Uv-kyH"/>
+                            <constraint firstItem="JHg-1u-mhz" firstAttribute="leading" secondItem="HhG-CL-euJ" secondAttribute="leading" id="kKS-Rf-U9P"/>
+                            <constraint firstItem="JHg-1u-mhz" firstAttribute="top" secondItem="mQ5-LN-zGZ" secondAttribute="bottom" constant="8" id="ljD-A9-150"/>
+                            <constraint firstItem="Jpm-lN-ZKJ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="wyg-8O-E7p" secondAttribute="trailing" id="qqJ-do-s38"/>
+                            <constraint firstItem="HhG-CL-euJ" firstAttribute="trailing" secondItem="mQ5-LN-zGZ" secondAttribute="trailing" id="tyL-Pn-2sC"/>
+                            <constraint firstItem="FMe-VJ-YzA" firstAttribute="trailing" secondItem="HhG-CL-euJ" secondAttribute="trailing" constant="16" id="vhw-qg-Di3"/>
+                            <constraint firstItem="HhG-CL-euJ" firstAttribute="leading" secondItem="wyg-8O-E7p" secondAttribute="leading" id="wST-NU-t5u"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="descriptionLabel" destination="JHg-1u-mhz" id="ExM-EJ-vPl"/>
+                        <outlet property="exitButton" destination="Jpm-lN-ZKJ" id="PWQ-lY-Y4s"/>
+                        <outlet property="loginLabel" destination="mQ5-LN-zGZ" id="gQ0-pS-gxN"/>
+                        <outlet property="userNameLabel" destination="HhG-CL-euJ" id="c1p-uA-CvP"/>
+                        <outlet property="userPhotoView" destination="wyg-8O-E7p" id="1f4-2O-GOf"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vud-cR-cyg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-428.24427480916029" y="-680.28169014084506"/>
+        </scene>
     </scenes>
     <resources>
         <image name="0" width="200" height="132"/>
+        <image name="Exit" width="44" height="44"/>
         <image name="No Active" width="44" height="44"/>
+        <image name="User Photo" width="140" height="140"/>
         <namedColor name="YP Background">
             <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="YP Black">
             <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="YP Gray">
+            <color red="0.68199998140335083" green="0.68599998950958252" blue="0.70599997043609619" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="YP White">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
