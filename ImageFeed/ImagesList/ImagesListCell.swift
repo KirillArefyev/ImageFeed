@@ -18,7 +18,7 @@ final class ImagesListCell: UITableViewCell {
             makeGradientView()
         }
     }
-    // MARK: - Methods
+    // MARK: - Private Methods
     private func makeGradientView() {
         let gradient = CAGradientLayer()
         let firstColor = UIColor.ifBlack.withAlphaComponent(0.0).cgColor
