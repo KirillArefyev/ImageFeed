@@ -10,7 +10,7 @@ import UIKit
 final class SingleImageViewController: UIViewController {
     // MARK: - IB Outlets
     @IBOutlet private var singleImageView: UIImageView!
-    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet private weak var scrollView: UIScrollView!
     // MARK: - Properties
     var image: UIImage! {
         didSet {
@@ -28,8 +28,9 @@ final class SingleImageViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     @IBAction private func didTapShareButton(_ sender: UIButton) {
+        guard let image = image else { return }
         let share = UIActivityViewController(
-            activityItems: [image!],
+            activityItems: [image],
             applicationActivities: nil
         )
         present(share, animated: true, completion: nil)

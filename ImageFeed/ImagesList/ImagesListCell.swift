@@ -7,16 +7,22 @@
 
 import UIKit
 
-final class ImagesListCell: UITableViewCell {
-    static let reuseIdentifier = "ImagesListCell"
+final class ImagesListCell: UITableViewCell, ImagesListCellProtocol {
+    static var reuseIdentifier = "ImagesListCell"
     // MARK: - IB Outlets
-    @IBOutlet var cellImage: UIImageView!
-    @IBOutlet var favoriteButton: UIButton!
-    @IBOutlet var dateLabel: UILabel!
-    @IBOutlet var gradientView: UIView! {
+    @IBOutlet private var cellImage: UIImageView!
+    @IBOutlet private var favoriteButton: UIButton!
+    @IBOutlet private var dateLabel: UILabel!
+    @IBOutlet private var gradientView: UIView! {
         didSet {
             makeGradientView()
         }
+    }
+    // MARK: - Public Methods
+    func configurate(with model: ImagesListCellModel) {
+        cellImage.image = model.image
+        favoriteButton.setImage(model.likeImage, for: .normal)
+        dateLabel.text = model.date
     }
     // MARK: - Private Methods
     private func makeGradientView() {

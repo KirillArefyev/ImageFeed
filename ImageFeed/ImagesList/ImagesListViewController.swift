@@ -21,8 +21,8 @@ final class ImagesListViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == showSingleImageSegueIdentifer {
-            let viewController = segue.destination as! SingleImageViewController
-            let indexPath = sender as! IndexPath
+            guard let viewController = segue.destination as? SingleImageViewController else { return }
+            guard let indexPath = sender as? IndexPath else { return }
             let image = UIImage(named: "\(photosName[indexPath.row])_full_size") ?? UIImage(named: photosName[indexPath.row])
             viewController.image = image
         } else {
@@ -33,14 +33,15 @@ final class ImagesListViewController: UIViewController {
 // MARK: - Extensions
 extension ImagesListViewController {
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
-        guard let image = UIImage(named: photosName[indexPath.row]) else {
-            return
-        }
-        cell.cellImage.image = image
-        cell.dateLabel.text = Date().dateString
+        guard let image = UIImage(named: photosName[indexPath.row]) else { return }
         let isLiked = indexPath.row % 2 == 0
-        let favoriteImage = isLiked ? UIImage(named: "favorite_active") : UIImage(named: "favorite_no_active")
-        cell.favoriteButton.setImage(favoriteImage, for: .normal)
+        guard let favoriteImage = isLiked ? UIImage(named: "favorite_active") : UIImage(named: "favorite_no_active") else { return }
+        let date = Date().dateString
+        let cellModel = ImagesListCellModel(
+            image: image,
+            likeImage: favoriteImage,
+            date: date)
+        cell.configurate(with: cellModel)
     }
 }
 
