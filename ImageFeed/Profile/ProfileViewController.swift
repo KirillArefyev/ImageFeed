@@ -65,11 +65,11 @@ final class ProfileViewController: UIViewController {
     }
     // MARK: - Private Methods
     private func addSubviews() {
-        view.addSubview(userPhotoView)
-        view.addSubview(userNameLabel)
-        view.addSubview(loginLabel)
-        view.addSubview(descriptionLabel)
-        view.addSubview(exitButton)
+        [userPhotoView,
+        userNameLabel,
+        loginLabel,
+        descriptionLabel,
+         exitButton].forEach { view.addSubview($0) }
     }
     
     private func applyConstraints() {
