@@ -14,6 +14,7 @@
 		ED0E067E2AFC10760061E1AB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ED0E067C2AFC10760061E1AB /* Main.storyboard */; };
 		ED0E06802AFC10770061E1AB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ED0E067F2AFC10770061E1AB /* Assets.xcassets */; };
 		ED0E06832AFC10770061E1AB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ED0E06812AFC10770061E1AB /* LaunchScreen.storyboard */; };
+		ED3ECD822B1F894E001380D0 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3ECD812B1F894E001380D0 /* Constants.swift */; };
 		ED44CF2E2AFFCB1C00EB20AA /* ImagesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED44CF2D2AFFCB1C00EB20AA /* ImagesListCell.swift */; };
 		ED51539C2B03B91E0072410E /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED51539B2B03B91E0072410E /* Date+Extension.swift */; };
 		ED91F7BB2B1D220E00B0981E /* ImagesListCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED91F7BA2B1D220E00B0981E /* ImagesListCellModel.swift */; };
@@ -32,6 +33,7 @@
 		ED0E067F2AFC10770061E1AB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		ED0E06822AFC10770061E1AB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		ED0E06842AFC10770061E1AB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		ED3ECD812B1F894E001380D0 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		ED44CF2D2AFFCB1C00EB20AA /* ImagesListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListCell.swift; sourceTree = "<group>"; };
 		ED51539B2B03B91E0072410E /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		ED91F7BA2B1D220E00B0981E /* ImagesListCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListCellModel.swift; sourceTree = "<group>"; };
@@ -104,6 +106,7 @@
 			children = (
 				ED0E067F2AFC10770061E1AB /* Assets.xcassets */,
 				ED0E06842AFC10770061E1AB /* Info.plist */,
+				ED3ECD812B1F894E001380D0 /* Constants.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -200,6 +203,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EDD423EC2AFF77EC00D93002 /* UIColor+Extensions.swift in Sources */,
+				ED3ECD822B1F894E001380D0 /* Constants.swift in Sources */,
 				ED0E067B2AFC10760061E1AB /* ImagesListViewController.swift in Sources */,
 				ED0E06772AFC10760061E1AB /* AppDelegate.swift in Sources */,
 				ED51539C2B03B91E0072410E /* Date+Extension.swift in Sources */,
