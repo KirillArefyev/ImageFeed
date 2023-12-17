@@ -9,6 +9,7 @@ import Foundation
 
 final class OAuth2Service {
     static let shared = OAuth2Service()
+    private init() { }
     // MARK: - Private Properties
     private let urlSession = URLSession.shared
     private (set) var authToken: String? {
