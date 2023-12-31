@@ -9,6 +9,10 @@ import UIKit
 
 final class ProfileViewController: UIViewController {
     // MARK: - Private Properties
+    private let profileService = ProfileService.shared
+    private let profileImageService = ProfileImageService.shared
+    private var profileImageServiceObserver: NSObjectProtocol?
+    
     private let userPhotoView: UIImageView = {
         let userPhotoView = UIImageView()
         let userStub = UIImage(named: "user_stub") ?? UIImage()
@@ -60,15 +64,26 @@ final class ProfileViewController: UIViewController {
     // MARK: - Overrides Methods
     override func viewDidLoad() {
         super.viewDidLoad()
+        profileImageServiceObserver = NotificationCenter.default
+            .addObserver(
+                forName: ProfileImageService.DidChangeNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                guard let self = self else { return }
+                self.updateAvatar()
+            }
         addSubviews()
         applyConstraints()
+        updateProfileDetails(profileService.profile)
+        updateAvatar()
     }
     // MARK: - Private Methods
     private func addSubviews() {
         [userPhotoView,
-        userNameLabel,
-        loginLabel,
-        descriptionLabel,
+         userNameLabel,
+         loginLabel,
+         descriptionLabel,
          exitButton].forEach { view.addSubview($0) }
     }
     
@@ -96,10 +111,25 @@ final class ProfileViewController: UIViewController {
         ])
     }
     
+    private func updateProfileDetails(_ profile: Profile?) {
+        guard let profile = profile else { return }
+        self.userNameLabel.text = profile.name
+        self.loginLabel.text = profile.loginName
+        self.descriptionLabel.text = profile.bio
+    }
+    
     @objc private func didTapExitButton() {
         userPhotoView.image = UIImage(named: "user_stub") ?? UIImage()
         userNameLabel.removeFromSuperview()
         loginLabel.removeFromSuperview()
         descriptionLabel.removeFromSuperview()
+    }
+    
+    @objc private func updateAvatar() {
+        guard
+            let profileImageURL = profileImageService.avatarURL,
+            let url = URL(string: profileImageURL)
+        else { return }
+        // TODO Обновить аватар с помощью Kingfisher
     }
 }
