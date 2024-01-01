@@ -50,7 +50,7 @@ extension ProfileService {
             completion(result)
         }
     }
-
+    
     private func profileRequest(_ token: String) -> URLRequest {
         var request = URLRequest.makeHTTPRequest(path: "/me", httpMethod: "GET")
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")

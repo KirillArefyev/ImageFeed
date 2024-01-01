@@ -1,5 +1,5 @@
 //
-//  UIColor+Extensions.swift
+//  UIColor+Extension.swift
 //  ImageFeed
 //
 //  Created by Кирилл on 11.11.2023.

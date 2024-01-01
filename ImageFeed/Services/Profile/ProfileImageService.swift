@@ -51,10 +51,10 @@ extension ProfileImageService {
         for request: URLRequest,
         completion: @escaping (Result<UserResult, Error>) -> Void
     ) -> URLSessionTask {
-            return urlSession.objectForTask(for: request) { (result: Result<UserResult, Error>) in
-                completion(result)
-            }
+        return urlSession.objectForTask(for: request) { (result: Result<UserResult, Error>) in
+            completion(result)
         }
+    }
     
     private func profileImageRequest(_ token: String, username: String) -> URLRequest {
         var request = URLRequest.makeHTTPRequest(path: "/users/\(username)", httpMethod: "GET")
