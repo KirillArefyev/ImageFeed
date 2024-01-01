@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
     // MARK: - Private Properties
@@ -130,6 +131,8 @@ final class ProfileViewController: UIViewController {
             let profileImageURL = profileImageService.avatarURL,
             let url = URL(string: profileImageURL)
         else { return }
-        // TODO Обновить аватар с помощью Kingfisher
+        userPhotoView.kf.indicatorType = .activity
+        userPhotoView.kf.setImage(with: url,
+                                  placeholder: UIImage(named: "user_stub"))
     }
 }

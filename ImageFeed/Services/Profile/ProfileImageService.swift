@@ -57,7 +57,7 @@ extension ProfileImageService {
         }
     
     private func profileImageRequest(_ token: String, username: String) -> URLRequest {
-        var request = URLRequest.makeHTTPRequest(path: "/users/:\(username)", httpMethod: "GET")
+        var request = URLRequest.makeHTTPRequest(path: "/users/\(username)", httpMethod: "GET")
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }
