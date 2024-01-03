@@ -12,6 +12,7 @@ final class ProfileViewController: UIViewController {
     // MARK: - Private Properties
     private let profileService = ProfileService.shared
     private let profileImageService = ProfileImageService.shared
+    private let oauth2TokenStorage = OAuth2TokenStorage.shared
     private var profileImageServiceObserver: NSObjectProtocol?
     
     private let userPhotoView: UIImageView = {
@@ -28,7 +29,7 @@ final class ProfileViewController: UIViewController {
         let userNameLabel = UILabel()
         userNameLabel.translatesAutoresizingMaskIntoConstraints = false
         userNameLabel.text = "Екатерина Новикова"
-        userNameLabel.textColor = .ypWhite
+        userNameLabel.textColor = .ifWhite
         userNameLabel.font = UIFont.boldSystemFont(ofSize: 23)
         return userNameLabel
     }()
@@ -37,7 +38,7 @@ final class ProfileViewController: UIViewController {
         let loginLabel = UILabel()
         loginLabel.translatesAutoresizingMaskIntoConstraints = false
         loginLabel.text = "@ekaterina_nov"
-        loginLabel.textColor = .ypGray
+        loginLabel.textColor = .ifGray
         loginLabel.font = UIFont.systemFont(ofSize: 13)
         return loginLabel
     }()
@@ -46,7 +47,7 @@ final class ProfileViewController: UIViewController {
         let descriptionLabel = UILabel()
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         descriptionLabel.text = "Hello, world!"
-        descriptionLabel.textColor = .ypWhite
+        descriptionLabel.textColor = .ifWhite
         descriptionLabel.font = UIFont.systemFont(ofSize: 13)
         return descriptionLabel
     }()
@@ -59,7 +60,7 @@ final class ProfileViewController: UIViewController {
             action: #selector(didTapExitButton)
         )
         exitButton.translatesAutoresizingMaskIntoConstraints = false
-        exitButton.tintColor = .ypRed
+        exitButton.tintColor = .ifRed
         return exitButton
     }()
     // MARK: - Overrides Methods
@@ -117,6 +118,7 @@ final class ProfileViewController: UIViewController {
         self.userNameLabel.text = profile.name
         self.loginLabel.text = profile.loginName
         self.descriptionLabel.text = profile.bio
+        oauth2TokenStorage.removeToken()
     }
     
     @objc private func didTapExitButton() {
@@ -132,7 +134,6 @@ final class ProfileViewController: UIViewController {
             let url = URL(string: profileImageURL)
         else { return }
         userPhotoView.kf.indicatorType = .activity
-        userPhotoView.kf.setImage(with: url,
-                                  placeholder: UIImage(named: "user_stub"))
+        userPhotoView.kf.setImage(with: url, placeholder: UIImage(named: "user_stub"))
     }
 }

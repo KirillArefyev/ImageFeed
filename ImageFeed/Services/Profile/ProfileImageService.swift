@@ -9,8 +9,8 @@ import Foundation
 
 final class ProfileImageService {
     static let shared = ProfileImageService()
-    static let DidChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
     init() { }
+    static let DidChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
     // MARK: - Private Properties
     private let urlSession = URLSession.shared
     private var task: URLSessionTask?
