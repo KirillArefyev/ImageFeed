@@ -21,7 +21,7 @@ final class ProfileService {
         if tokenForRequest == token { return }
         task?.cancel()
         tokenForRequest = token
-        let request = profileRequest(token)
+        guard let request = profileRequest(token) else { return }
         let task = object(for: request) { [weak self] result in
             guard let self = self else { return }
             switch result {
@@ -51,9 +51,9 @@ extension ProfileService {
         }
     }
     
-    private func profileRequest(_ token: String) -> URLRequest {
+    private func profileRequest(_ token: String) -> URLRequest? {
         var request = URLRequest.makeHTTPRequest(path: "/me", httpMethod: "GET")
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request?.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }
 }

@@ -29,7 +29,7 @@ final class OAuth2Service {
         if lastCode == code { return }
         task?.cancel()
         lastCode = code
-        let request = authTokenRequest(code)
+        guard let request = authTokenRequest(code) else { return }
         let task = object(for: request) { [weak self] result in
             guard let self = self else { return }
             switch result {
@@ -58,7 +58,7 @@ extension OAuth2Service {
         }
     }
     
-    private func authTokenRequest(_ code: String) -> URLRequest {
+    private func authTokenRequest(_ code: String) -> URLRequest? {
         URLRequest.makeHTTPRequest(
             path: "/oauth/token"
             + "?client_id=\(accessKey)"

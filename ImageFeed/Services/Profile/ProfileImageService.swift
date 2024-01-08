@@ -22,7 +22,7 @@ final class ProfileImageService {
         if lastUsername == username { return }
         task?.cancel()
         lastUsername = username
-        let request = profileImageRequest(token, username: username)
+        guard let request = profileImageRequest(token, username: username) else { return }
         let task = object(for: request) { [weak self] result in
             guard let self = self else { return }
             switch result {
@@ -56,9 +56,9 @@ extension ProfileImageService {
         }
     }
     
-    private func profileImageRequest(_ token: String, username: String) -> URLRequest {
+    private func profileImageRequest(_ token: String, username: String) -> URLRequest? {
         var request = URLRequest.makeHTTPRequest(path: "/users/\(username)", httpMethod: "GET")
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request?.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }
 }

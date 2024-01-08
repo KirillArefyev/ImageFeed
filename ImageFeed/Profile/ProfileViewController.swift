@@ -118,7 +118,6 @@ final class ProfileViewController: UIViewController {
         self.userNameLabel.text = profile.name
         self.loginLabel.text = profile.loginName
         self.descriptionLabel.text = profile.bio
-        oauth2TokenStorage.removeToken()
     }
     
     @objc private func didTapExitButton() {
@@ -126,6 +125,7 @@ final class ProfileViewController: UIViewController {
         userNameLabel.removeFromSuperview()
         loginLabel.removeFromSuperview()
         descriptionLabel.removeFromSuperview()
+        oauth2TokenStorage.removeToken()
     }
     
     @objc private func updateAvatar() {
