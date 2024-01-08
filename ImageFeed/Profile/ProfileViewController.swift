@@ -6,9 +6,15 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
     // MARK: - Private Properties
+    private let profileService = ProfileService.shared
+    private let profileImageService = ProfileImageService.shared
+    private let oauth2TokenStorage = OAuth2TokenStorage.shared
+    private var profileImageServiceObserver: NSObjectProtocol?
+    
     private let userPhotoView: UIImageView = {
         let userPhotoView = UIImageView()
         let userStub = UIImage(named: "user_stub") ?? UIImage()
@@ -23,7 +29,7 @@ final class ProfileViewController: UIViewController {
         let userNameLabel = UILabel()
         userNameLabel.translatesAutoresizingMaskIntoConstraints = false
         userNameLabel.text = "Екатерина Новикова"
-        userNameLabel.textColor = .ypWhite
+        userNameLabel.textColor = .ifWhite
         userNameLabel.font = UIFont.boldSystemFont(ofSize: 23)
         return userNameLabel
     }()
@@ -32,7 +38,7 @@ final class ProfileViewController: UIViewController {
         let loginLabel = UILabel()
         loginLabel.translatesAutoresizingMaskIntoConstraints = false
         loginLabel.text = "@ekaterina_nov"
-        loginLabel.textColor = .ypGray
+        loginLabel.textColor = .ifGray
         loginLabel.font = UIFont.systemFont(ofSize: 13)
         return loginLabel
     }()
@@ -41,7 +47,7 @@ final class ProfileViewController: UIViewController {
         let descriptionLabel = UILabel()
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         descriptionLabel.text = "Hello, world!"
-        descriptionLabel.textColor = .ypWhite
+        descriptionLabel.textColor = .ifWhite
         descriptionLabel.font = UIFont.systemFont(ofSize: 13)
         return descriptionLabel
     }()
@@ -54,21 +60,32 @@ final class ProfileViewController: UIViewController {
             action: #selector(didTapExitButton)
         )
         exitButton.translatesAutoresizingMaskIntoConstraints = false
-        exitButton.tintColor = .ypRed
+        exitButton.tintColor = .ifRed
         return exitButton
     }()
     // MARK: - Overrides Methods
     override func viewDidLoad() {
         super.viewDidLoad()
+        profileImageServiceObserver = NotificationCenter.default
+            .addObserver(
+                forName: ProfileImageService.DidChangeNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                guard let self = self else { return }
+                self.updateAvatar()
+            }
         addSubviews()
         applyConstraints()
+        updateProfileDetails(profileService.profile)
+        updateAvatar()
     }
     // MARK: - Private Methods
     private func addSubviews() {
         [userPhotoView,
-        userNameLabel,
-        loginLabel,
-        descriptionLabel,
+         userNameLabel,
+         loginLabel,
+         descriptionLabel,
          exitButton].forEach { view.addSubview($0) }
     }
     
@@ -96,10 +113,27 @@ final class ProfileViewController: UIViewController {
         ])
     }
     
+    private func updateProfileDetails(_ profile: Profile?) {
+        guard let profile = profile else { return }
+        self.userNameLabel.text = profile.name
+        self.loginLabel.text = profile.loginName
+        self.descriptionLabel.text = profile.bio
+    }
+    
     @objc private func didTapExitButton() {
         userPhotoView.image = UIImage(named: "user_stub") ?? UIImage()
         userNameLabel.removeFromSuperview()
         loginLabel.removeFromSuperview()
         descriptionLabel.removeFromSuperview()
+        oauth2TokenStorage.removeToken()
+    }
+    
+    @objc private func updateAvatar() {
+        guard
+            let profileImageURL = profileImageService.avatarURL,
+            let url = URL(string: profileImageURL)
+        else { return }
+        userPhotoView.kf.indicatorType = .activity
+        userPhotoView.kf.setImage(with: url, placeholder: UIImage(named: "user_stub"))
     }
 }
