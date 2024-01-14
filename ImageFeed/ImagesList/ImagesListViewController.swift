@@ -77,3 +77,9 @@ extension ImagesListViewController: UITableViewDataSource {
         return imageListCell
     }
 }
+
+extension ImagesListViewController {
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        //
+    }
+}

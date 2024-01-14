@@ -21,7 +21,7 @@ final class OAuth2Service {
             oauth2TokenStorage.token = newValue
         }
     }
-    private var task:  URLSessionTask?
+    private var task: URLSessionTask?
     private var lastCode: String?
     // MARK: - Public Methods
     func fetchOAuthToken(_ code: String, completion: @escaping (Result<String, Error>) -> Void) {
