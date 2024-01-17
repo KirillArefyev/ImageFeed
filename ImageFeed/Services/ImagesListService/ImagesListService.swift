@@ -16,27 +16,25 @@ final class ImagesListService {
     private let oauth2TokenStorage = OAuth2TokenStorage.shared
     private var task: URLSessionTask?
     private (set) var photos: [Photo] = []
-    private var lastLoadedPage: Int?
+    private var pageNumber: Int = 1
     // MARK: - Methods
-    func fetchPhotosNextPage(completion: @escaping (Result<[PhotoResult], Error>) -> Void) {
+    func fetchPhotosNextPage(completion: @escaping (Result<[Photo], Error>) -> Void) {
         assert(Thread.isMainThread)
         if task != nil { return }
         task?.cancel()
-        let nextPage = lastLoadedPage == nil ? 1 : (lastLoadedPage ?? 0) + 1
-        guard let request = listPhotosRequest(nextPage) else { return }
+        guard let request = listPhotosRequest(pageNumber) else { return }
         let task = object(for: request) { [weak self] result in
             guard let self = self else { return }
             switch result {
             case .success(let photoResults):
-                for photoResult in photoResults {
-                    self.photos.append(Photo(from: photoResult))
-                }
-                completion(.success(photoResults))
+                self.photos.append(contentsOf: photoResults.map { Photo(from: $0) })
+                completion(.success(self.photos))
                 NotificationCenter.default
                     .post(
                         name: ImagesListService.DidChangeNotification,
                         object: self,
                         userInfo: ["Photos": self.photos])
+                self.pageNumber += 1
                 self.task = nil
             case .failure(let error):
                 completion(.failure(error))
@@ -58,9 +56,12 @@ extension ImagesListService {
     }
     
     private func listPhotosRequest(_ page: Int) -> URLRequest? {
-        var request = URLRequest.makeHTTPRequest(path: "/photos"
-                                                 + "?page=\(page)", httpMethod: "GET")
-        guard let token = oauth2TokenStorage.token else { return nil}
+        var request = URLRequest.makeHTTPRequest(
+            path: "/photos"
+            + "?page=\(page)",
+            httpMethod: "GET"
+        )
+        guard let token = oauth2TokenStorage.token else { return nil }
         request?.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }

@@ -9,10 +9,10 @@ import Foundation
 
 struct PhotoResult: Codable {
     let id: String
-    let createdAt: Date?
+    let createdAt: String?
     let width: Double
     let height: Double
-    let description: String
+    let description: String?
     let isLiked: Bool
     let urlResult: UrlResult
     
@@ -23,7 +23,7 @@ struct PhotoResult: Codable {
         case height
         case description
         case isLiked = "liked_by_user"
-        case urlResult
+        case urlResult = "urls"
     }
 }
 
