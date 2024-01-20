@@ -6,21 +6,30 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ImagesListCell: UITableViewCell, ImagesListCellProtocol {
     static var reuseIdentifier = "ImagesListCell"
     // MARK: - IB Outlets
-    @IBOutlet private var cellImage: UIImageView!
-    @IBOutlet private var favoriteButton: UIButton!
-    @IBOutlet private var dateLabel: UILabel!
-    @IBOutlet private var gradientView: UIView! {
+    @IBOutlet weak var cellImage: UIImageView!
+    @IBOutlet weak var favoriteButton: UIButton!
+    @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet private weak var gradientView: UIView! {
         didSet {
             makeGradientView()
         }
     }
+    // MARK: - Overrides Methods
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        cellImage.kf.cancelDownloadTask()
+    }
     // MARK: - Public Methods
     func configurate(with model: ImagesListCellModel) {
-        cellImage.image = model.image
+        cellImage.kf.indicatorType = .activity
+        cellImage.kf.setImage(
+            with: URL(string: model.imageUrl),
+            placeholder: UIImage(named: "image_stub"))
         favoriteButton.setImage(model.likeImage, for: .normal)
         dateLabel.text = model.date
     }

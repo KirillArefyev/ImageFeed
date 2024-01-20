@@ -6,9 +6,10 @@
 //
 
 import UIKit
+import Kingfisher
 
 struct ImagesListCellModel {
-    var image: UIImage?
+    var imageUrl: String
     var likeImage: UIImage
     var date: String
 }
