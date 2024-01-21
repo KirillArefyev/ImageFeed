@@ -50,13 +50,14 @@ final class ImagesListViewController: UIViewController {
 // MARK: - Extensions
 extension ImagesListViewController {
     private func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
-        let isLiked = indexPath.row % 2 == 0
+        let isLiked = photos[indexPath.row].isLiked
         guard let favoriteImage = isLiked ? UIImage(named: "favorite_active") : UIImage(named: "favorite_no_active") else { return }
         let cellModel = ImagesListCellModel(
             imageUrl: photos[indexPath.row].thumbImageURL,
             likeImage: favoriteImage,
             date: (photos[indexPath.row].createdAt ?? Date()).dateString)
         cell.configurate(with: cellModel)
+        cell.delegate = self
     }
 }
 
@@ -111,6 +112,26 @@ extension ImagesListViewController {
                 }
                 tableView.insertRows(at: indexPaths, with: .automatic)
             } completion: { _ in }
+        }
+    }
+}
+
+extension ImagesListViewController: ImagesListCellDelegate {
+    func imageListCellDidTapLike(_ cell: ImagesListCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        let photo = photos[indexPath.row]
+        UIBlockingProgressHUD.show()
+        imagesListService.changeLike(photoId: photo.id, isLiked: !photo.isLiked) { result in
+            switch result {
+            case .success(_ ):
+                self.photos[indexPath.row].isLiked = !photo.isLiked
+                self.tableView.reloadRows(at: [indexPath], with: .none)
+                UIBlockingProgressHUD.dismiss()
+            case .failure(let error):
+                print("\(error)")
+                UIBlockingProgressHUD.dismiss()
+                //TODO: ПОказать ошибку с UIAlertController
+            }
         }
     }
 }

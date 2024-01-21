@@ -23,8 +23,9 @@ final class ImagesListService {
         if task != nil { return }
         task?.cancel()
         guard let request = listPhotosRequest(pageNumber) else { return }
-        let task = object(for: request) { [weak self] result in
+        let task = objectNextPageTask(for: request) { [weak self] result in
             guard let self = self else { return }
+            self.task = nil
             switch result {
             case .success(let photoResults):
                 self.photos.append(contentsOf: photoResults.map { Photo(from: $0) })
@@ -35,7 +36,28 @@ final class ImagesListService {
                         object: self,
                         userInfo: ["Photos": self.photos])
                 self.pageNumber += 1
-                self.task = nil
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+        self.task = task
+        task.resume()
+    }
+    
+    func changeLike(photoId: String, isLiked: Bool, completion: @escaping (Result<Void, Error>) -> Void) {
+        assert(Thread.isMainThread)
+        if task != nil { return }
+        task?.cancel()
+        guard let request = likePhotosRequest(photoId: photoId, isLiked: isLiked) else { return }
+        let task = objectLikeTask(for: request) { [weak self] (result: Result<LikePhotoResult, Error>) in
+            guard let self = self else { return }
+            self.task = nil
+            switch result {
+            case .success:
+                if let index = self.photos.firstIndex(where: { $0.id == photoId }) {
+                    self.photos[index].isLiked = isLiked
+                }
+                completion(.success(()))
             case .failure(let error):
                 completion(.failure(error))
             }
@@ -46,11 +68,20 @@ final class ImagesListService {
 }
 // MARK: - Extensions
 extension ImagesListService {
-    private func object(
+    private func objectNextPageTask(
         for request: URLRequest,
         completion: @escaping (Result<[PhotoResult], Error>) -> Void
     ) -> URLSessionTask {
         return urlSession.objectForTask(for: request) { (result: Result<[PhotoResult], Error>) in
+            completion(result)
+        }
+    }
+    
+    private func objectLikeTask(
+        for request: URLRequest,
+        completion: @escaping (Result<LikePhotoResult, Error>) -> Void
+    ) -> URLSessionTask {
+        return urlSession.objectForTask(for: request) { (result: Result<LikePhotoResult, Error>) in
             completion(result)
         }
     }
@@ -60,6 +91,19 @@ extension ImagesListService {
             path: "/photos"
             + "?page=\(page)",
             httpMethod: "GET"
+        )
+        guard let token = oauth2TokenStorage.token else { return nil }
+        request?.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        return request
+    }
+    
+    private func likePhotosRequest(photoId: String, isLiked: Bool) -> URLRequest? {
+        let method = isLiked ? "POST" : "DELETE"
+        var request = URLRequest.makeHTTPRequest(
+            path: "/photos"
+            + "/\(photoId)"
+            + "/like",
+            httpMethod: method
         )
         guard let token = oauth2TokenStorage.token else { return nil }
         request?.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")

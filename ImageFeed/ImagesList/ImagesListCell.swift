@@ -8,6 +8,10 @@
 import UIKit
 import Kingfisher
 
+protocol ImagesListCellDelegate: AnyObject {
+    func imageListCellDidTapLike(_ cell: ImagesListCell)
+}
+
 final class ImagesListCell: UITableViewCell, ImagesListCellProtocol {
     static var reuseIdentifier = "ImagesListCell"
     // MARK: - IB Outlets
@@ -19,12 +23,18 @@ final class ImagesListCell: UITableViewCell, ImagesListCellProtocol {
             makeGradientView()
         }
     }
+    // MARK: - Properties
+    weak var delegate: ImagesListCellDelegate?
     // MARK: - Overrides Methods
     override func prepareForReuse() {
         super.prepareForReuse()
         cellImage.kf.cancelDownloadTask()
     }
-    // MARK: - Public Methods
+    // MARK: - IB Actions
+    @IBAction private func likeButtonClicked() {
+        delegate?.imageListCellDidTapLike(self)
+    }
+    // MARK: - Methods
     func configurate(with model: ImagesListCellModel) {
         cellImage.kf.indicatorType = .activity
         cellImage.kf.setImage(
