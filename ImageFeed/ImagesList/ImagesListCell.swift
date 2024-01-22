@@ -36,7 +36,6 @@ final class ImagesListCell: UITableViewCell, ImagesListCellProtocol {
     }
     // MARK: - Methods
     func configurate(with model: ImagesListCellModel) {
-        cellImage.kf.indicatorType = .activity
         cellImage.kf.setImage(
             with: URL(string: model.imageUrl),
             placeholder: UIImage(named: "image_stub"))

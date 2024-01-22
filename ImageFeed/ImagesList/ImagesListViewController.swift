@@ -13,7 +13,6 @@ final class ImagesListViewController: UIViewController {
     // MARK: - IB Outlets
     @IBOutlet private weak var tableView: UITableView!
     // MARK: - Private Properties
-    private let photosName: [String] = Array(0..<20).map{ "\($0)" }
     private let showSingleImageSegueIdentifer = "ShowSingleImage"
     private var photos: [Photo] = []
     private let imagesListService = ImagesListService.shared
@@ -38,10 +37,11 @@ final class ImagesListViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == showSingleImageSegueIdentifer {
-            guard let viewController = segue.destination as? SingleImageViewController,
-                  let indexPath = sender as? IndexPath else { return }
-            let image = UIImage(named: "\(photosName[indexPath.row])_full_size") ?? UIImage(named: photosName[indexPath.row])
-            viewController.image = image
+            guard
+                let viewController = segue.destination as? SingleImageViewController,
+                let indexPath = sender as? IndexPath
+            else { return }
+            viewController.fullImageUrl = self.photos[indexPath.row].largeImageURL
         } else {
             super.prepare(for: segue, sender: sender)
         }
@@ -121,15 +121,15 @@ extension ImagesListViewController: ImagesListCellDelegate {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         let photo = photos[indexPath.row]
         UIBlockingProgressHUD.show()
-        imagesListService.changeLike(photoId: photo.id, isLiked: !photo.isLiked) { result in
+        imagesListService.changeLike(photoId: photo.id, isLiked: !photo.isLiked) { [weak self] result in
+            guard let self = self else { return }
+            UIBlockingProgressHUD.dismiss()
             switch result {
             case .success(_ ):
                 self.photos[indexPath.row].isLiked = !photo.isLiked
                 self.tableView.reloadRows(at: [indexPath], with: .none)
-                UIBlockingProgressHUD.dismiss()
             case .failure(let error):
-                print("\(error)")
-                UIBlockingProgressHUD.dismiss()
+                assertionFailure("\(error)")
                 //TODO: ПОказать ошибку с UIAlertController
             }
         }
