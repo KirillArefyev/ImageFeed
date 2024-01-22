@@ -7,6 +7,7 @@
 
 import UIKit
 import Kingfisher
+import WebKit
 
 final class ProfileViewController: UIViewController {
     // MARK: - Private Properties
@@ -14,6 +15,7 @@ final class ProfileViewController: UIViewController {
     private let profileImageService = ProfileImageService.shared
     private let oauth2TokenStorage = OAuth2TokenStorage.shared
     private var profileImageServiceObserver: NSObjectProtocol?
+    private let splashViewController = SplashViewController()
     
     private let userPhotoView: UIImageView = {
         let userPhotoView = UIImageView()
@@ -121,11 +123,7 @@ final class ProfileViewController: UIViewController {
     }
     
     @objc private func didTapExitButton() {
-        userPhotoView.image = UIImage(named: "user_stub") ?? UIImage()
-        userNameLabel.removeFromSuperview()
-        loginLabel.removeFromSuperview()
-        descriptionLabel.removeFromSuperview()
-        oauth2TokenStorage.removeToken()
+        logout()
     }
     
     @objc private func updateAvatar() {
@@ -135,5 +133,41 @@ final class ProfileViewController: UIViewController {
         else { return }
         userPhotoView.kf.indicatorType = .activity
         userPhotoView.kf.setImage(with: url, placeholder: UIImage(named: "user_stub"))
+    }
+}
+// MARK: - Extensions
+extension ProfileViewController {
+    static func clean() {
+        HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
+        WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
+            records.forEach { record in
+                WKWebsiteDataStore.default().removeData(
+                    ofTypes: record.dataTypes,
+                    for: [record],
+                    completionHandler: { })
+            }
+        }
+    }
+    
+    private func logout() {
+        erasingSubviews()
+        oauth2TokenStorage.removeToken()
+        Self.clean()
+        returnToAuthenticationScreen()
+    }
+    
+    private func returnToAuthenticationScreen() {
+        DispatchQueue.main.async {
+            if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
+                sceneDelegate.window?.rootViewController?.present(self.splashViewController, animated: true)
+            }
+        }
+    }
+    
+    private func erasingSubviews() {
+        userPhotoView.image = UIImage(named: "user_stub") ?? UIImage()
+        userNameLabel.removeFromSuperview()
+        loginLabel.removeFromSuperview()
+        descriptionLabel.removeFromSuperview()
     }
 }
