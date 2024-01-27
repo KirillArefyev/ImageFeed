@@ -5,8 +5,8 @@
 //  Created by Кирилл on 03.12.2023.
 //
 
-import UIKit
 import Kingfisher
+import UIKit
 
 struct ImagesListCellModel {
     var imageUrl: String

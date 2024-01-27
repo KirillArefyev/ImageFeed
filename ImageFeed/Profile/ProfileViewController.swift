@@ -5,8 +5,8 @@
 //  Created by Кирилл on 21.11.2023.
 //
 
-import UIKit
 import Kingfisher
+import UIKit
 import WebKit
 
 final class ProfileViewController: UIViewController {

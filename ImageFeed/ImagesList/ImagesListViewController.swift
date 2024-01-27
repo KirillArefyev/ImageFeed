@@ -5,9 +5,9 @@
 //  Created by Кирилл on 08.11.2023.
 //
 
-import UIKit
 import Kingfisher
 import ProgressHUD
+import UIKit
 
 final class ImagesListViewController: UIViewController {
     // MARK: - IB Outlets
@@ -125,7 +125,7 @@ extension ImagesListViewController: ImagesListCellDelegate {
             guard let self = self else { return }
             UIBlockingProgressHUD.dismiss()
             switch result {
-            case .success(_ ):
+            case .success(_):
                 self.photos[indexPath.row].isLiked = !photo.isLiked
                 self.tableView.reloadRows(at: [indexPath], with: .none)
             case .failure(let error):

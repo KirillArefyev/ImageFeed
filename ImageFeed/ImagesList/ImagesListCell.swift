@@ -5,8 +5,8 @@
 //  Created by Кирилл on 11.11.2023.
 //
 
-import UIKit
 import Kingfisher
+import UIKit
 
 protocol ImagesListCellDelegate: AnyObject {
     func imageListCellDidTapLike(_ cell: ImagesListCell)
@@ -15,9 +15,9 @@ protocol ImagesListCellDelegate: AnyObject {
 final class ImagesListCell: UITableViewCell, ImagesListCellProtocol {
     static var reuseIdentifier = "ImagesListCell"
     // MARK: - IB Outlets
-    @IBOutlet weak var cellImage: UIImageView!
-    @IBOutlet weak var favoriteButton: UIButton!
-    @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet private weak var cellImage: UIImageView!
+    @IBOutlet private weak var favoriteButton: UIButton!
+    @IBOutlet private weak var dateLabel: UILabel!
     @IBOutlet private weak var gradientView: UIView! {
         didSet {
             makeGradientView()
