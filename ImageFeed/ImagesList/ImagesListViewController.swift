@@ -125,13 +125,24 @@ extension ImagesListViewController: ImagesListCellDelegate {
             guard let self = self else { return }
             UIBlockingProgressHUD.dismiss()
             switch result {
-            case .success(_):
+            case .success:
                 self.photos[indexPath.row].isLiked = !photo.isLiked
                 self.tableView.reloadRows(at: [indexPath], with: .none)
-            case .failure(let error):
-                assertionFailure("\(error)")
-                //TODO: ПОказать ошибку с UIAlertController
+            case .failure:
+                self.showAlert()
             }
         }
+    }
+    
+    private func showAlert() {
+        let alert = UIAlertController(
+            title: "Что-то пошло не так(",
+            message: "Попробуйте ещё раз",
+            preferredStyle: .alert)
+        let alertAction = UIAlertAction(
+            title: "ОК",
+            style: .cancel)
+        alert.addAction(alertAction)
+        self.present(alert, animated: true)
     }
 }

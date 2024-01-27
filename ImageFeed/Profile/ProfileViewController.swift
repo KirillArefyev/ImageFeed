@@ -68,19 +68,8 @@ final class ProfileViewController: UIViewController {
     // MARK: - Overrides Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        profileImageServiceObserver = NotificationCenter.default
-            .addObserver(
-                forName: ProfileImageService.DidChangeNotification,
-                object: nil,
-                queue: .main
-            ) { [weak self] _ in
-                guard let self = self else { return }
-                self.updateAvatar()
-            }
-        addSubviews()
-        applyConstraints()
         updateProfileDetails(profileService.profile)
-        updateAvatar()
+        setupProfileViews()
     }
     // MARK: - Private Methods
     private func addSubviews() {
@@ -123,7 +112,8 @@ final class ProfileViewController: UIViewController {
     }
     
     @objc private func didTapExitButton() {
-        logout()
+        erasingSubviews()
+        showAlert()
     }
     
     @objc private func updateAvatar() {
@@ -150,7 +140,6 @@ extension ProfileViewController {
     }
     
     private func logout() {
-        erasingSubviews()
         oauth2TokenStorage.removeToken()
         Self.clean()
         returnToAuthenticationScreen()
@@ -169,5 +158,42 @@ extension ProfileViewController {
         userNameLabel.removeFromSuperview()
         loginLabel.removeFromSuperview()
         descriptionLabel.removeFromSuperview()
+    }
+    
+    private func setupProfileViews() {
+        profileImageServiceObserver = NotificationCenter.default
+            .addObserver(
+                forName: ProfileImageService.DidChangeNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                guard let self = self else { return }
+                self.updateAvatar()
+            }
+        addSubviews()
+        applyConstraints()
+        updateAvatar()
+    }
+    
+    private func showAlert() {
+        let alert = UIAlertController(
+            title: "Пока, пока!",
+            message: "Уверены, что хотите выйти?",
+            preferredStyle: .alert)
+        let alertActionApprove = UIAlertAction(
+            title: "Да",
+            style: .default) { [weak self] _ in
+                guard let self = self else { return }
+                self.logout()
+            }
+        let alertActionCancel = UIAlertAction(
+            title: "Нет",
+            style: .default) { [weak self] _ in
+                guard let self = self else { return }
+                self.setupProfileViews()
+            }
+        alert.addAction(alertActionApprove)
+        alert.addAction(alertActionCancel)
+        self.present(alert, animated: true)
     }
 }
