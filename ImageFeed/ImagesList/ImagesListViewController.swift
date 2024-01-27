@@ -55,7 +55,7 @@ extension ImagesListViewController {
         let cellModel = ImagesListCellModel(
             imageUrl: photos[indexPath.row].thumbImageURL,
             likeImage: favoriteImage,
-            date: (photos[indexPath.row].createdAt ?? Date()).dateString)
+            date: photos[indexPath.row].createdAt?.dateString ?? "")
         cell.configurate(with: cellModel)
         cell.delegate = self
     }
