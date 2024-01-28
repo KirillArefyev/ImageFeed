@@ -5,22 +5,40 @@
 //  Created by Кирилл on 11.11.2023.
 //
 
+import Kingfisher
 import UIKit
+
+protocol ImagesListCellDelegate: AnyObject {
+    func imageListCellDidTapLike(_ cell: ImagesListCell)
+}
 
 final class ImagesListCell: UITableViewCell, ImagesListCellProtocol {
     static var reuseIdentifier = "ImagesListCell"
     // MARK: - IB Outlets
-    @IBOutlet private var cellImage: UIImageView!
-    @IBOutlet private var favoriteButton: UIButton!
-    @IBOutlet private var dateLabel: UILabel!
-    @IBOutlet private var gradientView: UIView! {
+    @IBOutlet private weak var cellImage: UIImageView!
+    @IBOutlet private weak var favoriteButton: UIButton!
+    @IBOutlet private weak var dateLabel: UILabel!
+    @IBOutlet private weak var gradientView: UIView! {
         didSet {
             makeGradientView()
         }
     }
-    // MARK: - Public Methods
+    // MARK: - Properties
+    weak var delegate: ImagesListCellDelegate?
+    // MARK: - Overrides Methods
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        cellImage.kf.cancelDownloadTask()
+    }
+    // MARK: - IB Actions
+    @IBAction private func likeButtonClicked() {
+        delegate?.imageListCellDidTapLike(self)
+    }
+    // MARK: - Methods
     func configurate(with model: ImagesListCellModel) {
-        cellImage.image = model.image
+        cellImage.kf.setImage(
+            with: URL(string: model.imageUrl),
+            placeholder: UIImage(named: "image_stub"))
         favoriteButton.setImage(model.likeImage, for: .normal)
         dateLabel.text = model.date
     }
