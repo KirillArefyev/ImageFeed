@@ -6,11 +6,10 @@
 //
 
 import Foundation
-import WebKit
 
 protocol AuthHelperProtocol {
     func authRequest() -> URLRequest?
-    func code(from navigationAction: WKNavigationAction) -> String?
+    func code(from url: URL) -> String?
 }
 
 class AuthHelper: AuthHelperProtocol {
@@ -20,14 +19,24 @@ class AuthHelper: AuthHelperProtocol {
         self.configuration = configuration
     }
     // MARK: - Public Methods
+    func authURL() -> URL? {
+        var urlComponents = URLComponents(string: configuration.authURLString)
+        urlComponents?.queryItems = [
+            URLQueryItem(name: "client_id", value: configuration.accessKey),
+            URLQueryItem(name: "redirect_uri", value: configuration.redirectURI),
+            URLQueryItem(name: "response_type", value: "code"),
+            URLQueryItem(name: "scope", value: configuration.accessScope)
+        ]
+        return urlComponents?.url
+    }
+    
     func authRequest() -> URLRequest? {
         guard let url = authURL() else { return nil }
         return URLRequest(url: url)
     }
     
-    func code(from navigationAction: WKNavigationAction) -> String? {
+    func code(from url: URL) -> String? {
         if
-            let url = navigationAction.request.url,
             let urlComponents = URLComponents(string: url.absoluteString),
             urlComponents.path == "/oauth/authorize/native",
             let items = urlComponents.queryItems,
@@ -37,16 +46,5 @@ class AuthHelper: AuthHelperProtocol {
         } else {
             return nil
         }
-    }
-    // MARK: - Private Methods
-    private func authURL() -> URL? {
-        var urlComponents = URLComponents(string: configuration.authURLString)
-        urlComponents?.queryItems = [
-            URLQueryItem(name: "client_id", value: configuration.accessKey),
-            URLQueryItem(name: "redirect_uri", value: configuration.redirectURI),
-            URLQueryItem(name: "response_type", value: "code"),
-            URLQueryItem(name: "scope", value: configuration.accessScope)
-        ]
-        return urlComponents?.url
     }
 }

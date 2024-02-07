@@ -6,13 +6,12 @@
 //
 
 import Foundation
-import WebKit
 
 public protocol WebViewPresenterProtocol {
     var view: WebViewViewControllerProtocol? { get set }
     func viewDidLoad()
     func didUpdateProgressValue(_ newValue: Double)
-    func code(from navigationAction: WKNavigationAction) -> String?
+    func code(from url: URL) -> String?
 }
 
 final class WebViewPresenter: WebViewPresenterProtocol {
@@ -40,7 +39,7 @@ final class WebViewPresenter: WebViewPresenterProtocol {
         abs(value - 1.0) <= 0.0001
     }
     
-    func code(from navigationAction: WKNavigationAction) -> String? {
-        authHelper.code(from: navigationAction)
+    func code(from url: URL) -> String? {
+        authHelper.code(from: url)
     }
 }
