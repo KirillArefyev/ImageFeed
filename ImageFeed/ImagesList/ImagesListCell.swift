@@ -40,6 +40,7 @@ final class ImagesListCell: UITableViewCell, ImagesListCellProtocol {
             with: URL(string: model.imageUrl),
             placeholder: UIImage(named: "image_stub"))
         favoriteButton.setImage(model.likeImage, for: .normal)
+        favoriteButton.accessibilityIdentifier = "favoriteButton"
         dateLabel.text = model.date
     }
     // MARK: - Private Methods

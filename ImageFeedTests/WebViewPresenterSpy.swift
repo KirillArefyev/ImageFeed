@@ -7,7 +7,6 @@
 
 import Foundation
 import ImageFeed
-import WebKit
 
 final class WebViewPresenterSpy: WebViewPresenterProtocol {
     var view: ImageFeed.WebViewViewControllerProtocol?

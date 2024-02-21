@@ -29,6 +29,7 @@ final class ProfileViewController: UIViewController {
     
     private let userNameLabel: UILabel = {
         let userNameLabel = UILabel()
+        userNameLabel.accessibilityIdentifier = "userNameLabel"
         userNameLabel.translatesAutoresizingMaskIntoConstraints = false
         userNameLabel.text = "Екатерина Новикова"
         userNameLabel.textColor = .ifWhite
@@ -38,6 +39,7 @@ final class ProfileViewController: UIViewController {
     
     private let loginLabel: UILabel = {
         let loginLabel = UILabel()
+        loginLabel.accessibilityIdentifier = "loginLabel"
         loginLabel.translatesAutoresizingMaskIntoConstraints = false
         loginLabel.text = "@ekaterina_nov"
         loginLabel.textColor = .ifGray
@@ -63,6 +65,7 @@ final class ProfileViewController: UIViewController {
         )
         exitButton.translatesAutoresizingMaskIntoConstraints = false
         exitButton.tintColor = .ifRed
+        exitButton.accessibilityIdentifier = "backButton"
         return exitButton
     }()
     // MARK: - Overrides Methods
