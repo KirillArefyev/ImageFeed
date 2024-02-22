@@ -14,6 +14,7 @@ final class ImageFeedUITests: XCTestCase {
         try super.setUpWithError()
         continueAfterFailure = false
         app = XCUIApplication()
+        app.launchArguments = ["testMode"]
         app.launch()
     }
     
@@ -26,13 +27,13 @@ final class ImageFeedUITests: XCTestCase {
         let loginTextField = webView.descendants(matching: .textField).element
         XCTAssertTrue(loginTextField.waitForExistence(timeout: 5))
         loginTextField.tap()
-        loginTextField.typeText("")
+        loginTextField.typeText("arefyev2009@yandex.ru")
         webView.swipeUp()
         
         let passwordTextField = webView.descendants(matching: .secureTextField).element
         XCTAssertTrue(passwordTextField.waitForExistence(timeout: 5))
         passwordTextField.tap()
-        passwordTextField.typeText("")
+        passwordTextField.typeText("vicvyq-3dakzy-qyjkUr")
         webView.swipeUp()
         
         webView.buttons["Login"].tap()
@@ -51,11 +52,10 @@ final class ImageFeedUITests: XCTestCase {
         sleep(2)
         
         let cellToLike = tableQuery.children(matching: .cell).element(boundBy: 1)
-        // закомментированный код не работает(
-        //        cellToLike.buttons["favoriteButton"].tap()
-        //        sleep(2)
-        //        cellToLike.buttons["favoriteButton"].tap()
-        //        sleep(2)
+        cellToLike.buttons["favoriteButton"].tap()
+        sleep(2)
+        cellToLike.buttons["favoriteButton"].tap()
+        sleep(2)
         
         cellToLike.tap()
         sleep(2)

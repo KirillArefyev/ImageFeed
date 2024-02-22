@@ -93,7 +93,7 @@ extension ImagesListViewController: UITableViewDataSource {
 
 extension ImagesListViewController {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if (indexPath.row + 1) == photos.count {
+        if (indexPath.row + 1) == photos.count && !ProcessInfo().arguments.contains("testMode") {
             UIBlockingProgressHUD.show()
             imagesListService.fetchPhotosNextPage(completion: { _ in })
         }
