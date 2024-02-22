@@ -99,6 +99,7 @@ extension SplashViewController: AuthViewControllerDelegate {
                 self.fetchProfile(token)
             case .failure:
                 UIBlockingProgressHUD.dismiss()
+                self.oauth2TokenStorage.removeToken()
                 self.showAlert()
                 break
             }
