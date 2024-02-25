@@ -15,9 +15,11 @@ final class SingleImageViewController: UIViewController {
     @IBOutlet private weak var scrollView: UIScrollView!
     // MARK: - Properties
     var fullImageUrl: String?
+    var alertPresenter: AlertPresenterProtocol?
     // MARK: - Overrides Methods
     override func viewDidLoad() {
         super.viewDidLoad()
+        alertPresenter = AlertPresenter(delegate: self)
         singleImageView.image = nil
         configurateSingleImageView()
     }
@@ -78,24 +80,20 @@ final class SingleImageViewController: UIViewController {
     }
     
     private func showError() {
-        let alert = UIAlertController(
+        let alert = ConfirmAlertModel(
             title: "Что-то пошло не так(",
             message: "Попробовать ещё раз?",
-            preferredStyle: .alert)
-        let alertActionCancel = UIAlertAction(
-            title: "Не надо",
-            style: .default) { [weak self] _ in
+            firstButtonText: "Не надо",
+            secondButtonText: "Повторить",
+            firstAction: { [weak self] in
                 guard let self = self else { return }
-                self.didTapBackButton()}
-        let alertActionRetry = UIAlertAction(
-            title: "Повторить",
-            style: .default) { [weak self] _ in
+                self.didTapBackButton()
+            },
+            secondAction: { [weak self] in
                 guard let self = self else { return }
                 configurateSingleImageView().self
-            }
-        alert.addAction(alertActionCancel)
-        alert.addAction(alertActionRetry)
-        self.present(alert, animated: true)
+            })
+        self.alertPresenter?.showConfirm(alert)
     }
 }
 // MARK: - Extensions

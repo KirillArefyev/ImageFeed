@@ -209,6 +209,16 @@
 			path = Alert;
 			sourceTree = "<group>";
 		};
+		ED22CD9F2B8B8F1800DD2523 /* WebView */ = {
+			isa = PBXGroup;
+			children = (
+				ED609C682B736DAC00EBF23E /* WebViewTests.swift */,
+				ED609C6F2B73751E00EBF23E /* WebViewPresenterSpy.swift */,
+				ED609C712B7376E800EBF23E /* WebViewViewControllerSpy.swift */,
+			);
+			path = WebView;
+			sourceTree = "<group>";
+		};
 		ED3AF8ED2B39F9F3007B9913 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
@@ -274,9 +284,7 @@
 		ED609C672B736DAC00EBF23E /* ImageFeedTests */ = {
 			isa = PBXGroup;
 			children = (
-				ED609C682B736DAC00EBF23E /* WebViewTests.swift */,
-				ED609C6F2B73751E00EBF23E /* WebViewPresenterSpy.swift */,
-				ED609C712B7376E800EBF23E /* WebViewViewControllerSpy.swift */,
+				ED22CD9F2B8B8F1800DD2523 /* WebView */,
 			);
 			path = ImageFeedTests;
 			sourceTree = "<group>";
