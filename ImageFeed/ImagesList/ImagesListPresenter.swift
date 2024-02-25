@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import UIKit
 
 protocol ImagesListPresenterProtocol {
     var view: ImagesListViewControllerProtocol? { get set }
@@ -14,23 +13,16 @@ protocol ImagesListPresenterProtocol {
     var imagesListService: ImagesListService { get }
     
     func viewDidLoad()
-    func updateTableViewAnimated()
-    func configCell(for cell: ImagesListCell, with indexPath: IndexPath)
+    func cellTapLike(_ cell: ImagesListCell)
 }
 
-final class ImagesListPresenter: ImagesListPresenterProtocol, ImagesListCellDelegate {
+final class ImagesListPresenter: ImagesListPresenterProtocol {
     // MARK: - Public Properties
     weak var view: ImagesListViewControllerProtocol?
     var photos: [Photo] = []
     var imagesListService = ImagesListService.shared
     // MARK: - Private Properties
-    private var alertPresenter: AlertPresenterProtocol?
     private var imagesListServiceObserver: NSObjectProtocol?
-    
-    init(viewController: ImagesListViewControllerProtocol?) {
-        self.view = viewController
-        self.alertPresenter = AlertPresenter(delegate: viewController as? UIViewController)
-    }
     // MARK: - Public Methods
     func viewDidLoad() {
         UIBlockingProgressHUD.show()
@@ -43,25 +35,11 @@ final class ImagesListPresenter: ImagesListPresenterProtocol, ImagesListCellDele
             ) { [weak self] _ in
                 guard let self = self else { return }
                 UIBlockingProgressHUD.dismiss()
-                self.updateTableViewAnimated()
+                view?.updateTableViewAnimated()
             }
     }
     
-    func updateTableViewAnimated() {
-        let oldCount = photos.count
-        let newCount = imagesListService.photos.count
-        photos = imagesListService.photos
-        if oldCount != newCount {
-            view?.tableView.performBatchUpdates {
-                let indexPaths = (oldCount..<newCount).map { i in
-                    IndexPath(row: i, section: 0)
-                }
-                view?.tableView.insertRows(at: indexPaths, with: .automatic)
-            } completion: { _ in }
-        }
-    }
-    
-    func imageListCellDidTapLike(_ cell: ImagesListCell) {
+    func cellTapLike(_ cell: ImagesListCell) {
         guard let indexPath = view?.tableView.indexPath(for: cell) else { return }
         let photo = photos[indexPath.row]
         UIBlockingProgressHUD.show()
@@ -78,19 +56,8 @@ final class ImagesListPresenter: ImagesListPresenterProtocol, ImagesListCellDele
                     message: "Попробуйте ещё раз",
                     buttonText: "ОК",
                     completion: { })
-                alertPresenter?.showError(errorAlert)
+                view?.alertPresenter?.showError(errorAlert)
             }
         }
-    }
-    
-    func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
-        let isLiked = photos[indexPath.row].isLiked
-        guard let favoriteImage = isLiked ? UIImage(named: "favorite_active") : UIImage(named: "favorite_no_active") else { return }
-        let cellModel = ImagesListCellModel(
-            imageUrl: photos[indexPath.row].thumbImageURL,
-            likeImage: favoriteImage,
-            date: photos[indexPath.row].createdAt?.dateString ?? "")
-        cell.configurate(with: cellModel)
-        cell.delegate = self
     }
 }

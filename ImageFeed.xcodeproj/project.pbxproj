@@ -18,6 +18,7 @@
 		ED22CD972B8795F900DD2523 /* ImagesListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED22CD962B8795F900DD2523 /* ImagesListPresenter.swift */; };
 		ED22CD9A2B88928300DD2523 /* AlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED22CD992B88928300DD2523 /* AlertPresenter.swift */; };
 		ED22CD9C2B8892F400DD2523 /* AlertModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED22CD9B2B8892F400DD2523 /* AlertModel.swift */; };
+		ED22CD9E2B88FEA900DD2523 /* ProfilePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED22CD9D2B88FEA900DD2523 /* ProfilePresenter.swift */; };
 		ED2D43BA2B32E94800C2F9C3 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2D43B92B32E94800C2F9C3 /* Profile.swift */; };
 		ED365CAD2B307E1700A8E9BE /* UIBlockingProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED365CAC2B307E1700A8E9BE /* UIBlockingProgressHUD.swift */; };
 		ED3AF8EC2B397C4E007B9913 /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = ED3AF8EB2B397C4E007B9913 /* ProgressHUD */; };
@@ -85,6 +86,7 @@
 		ED22CD962B8795F900DD2523 /* ImagesListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListPresenter.swift; sourceTree = "<group>"; };
 		ED22CD992B88928300DD2523 /* AlertPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenter.swift; sourceTree = "<group>"; };
 		ED22CD9B2B8892F400DD2523 /* AlertModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertModel.swift; sourceTree = "<group>"; };
+		ED22CD9D2B88FEA900DD2523 /* ProfilePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePresenter.swift; sourceTree = "<group>"; };
 		ED2D43B92B32E94800C2F9C3 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		ED365CAC2B307E1700A8E9BE /* UIBlockingProgressHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBlockingProgressHUD.swift; sourceTree = "<group>"; };
 		ED3AF8EE2B39FA3B007B9913 /* ProfileImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageService.swift; sourceTree = "<group>"; };
@@ -151,6 +153,7 @@
 		ED08C05F2B0C8B3B008BD866 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				ED22CD9D2B88FEA900DD2523 /* ProfilePresenter.swift */,
 				ED08C0622B0C8C87008BD866 /* ProfileViewController.swift */,
 			);
 			path = Profile;
@@ -488,6 +491,7 @@
 				EDD423EC2AFF77EC00D93002 /* UIColor+Extension.swift in Sources */,
 				ED7C75142B4559AC005BFC45 /* TabBarController.swift in Sources */,
 				ED3ECD822B1F894E001380D0 /* AuthConfiguration.swift in Sources */,
+				ED22CD9E2B88FEA900DD2523 /* ProfilePresenter.swift in Sources */,
 				ED0E067B2AFC10760061E1AB /* ImagesListViewController.swift in Sources */,
 				ED5FDDB72B276A7F00A00888 /* SplashViewController.swift in Sources */,
 				ED0E06772AFC10760061E1AB /* AppDelegate.swift in Sources */,

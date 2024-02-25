@@ -48,16 +48,16 @@ final class ImageFeedUITests: XCTestCase {
         let tableQuery = app.tables
         let cell = tableQuery.children(matching: .cell).element(boundBy: 0)
         cell.swipeUp()
-        sleep(2)
+        sleep(3)
         
         let cellToLike = tableQuery.children(matching: .cell).element(boundBy: 1)
         cellToLike.buttons["favoriteButton"].tap()
-        sleep(2)
+        sleep(3)
         cellToLike.buttons["favoriteButton"].tap()
-        sleep(2)
+        sleep(3)
         
         cellToLike.tap()
-        sleep(2)
+        sleep(5)
         
         let image = app.scrollViews.images.element(boundBy: 0)
         image.pinch(withScale: 3, velocity: 1)
@@ -70,7 +70,7 @@ final class ImageFeedUITests: XCTestCase {
     func testProfile() throws {
         sleep(3)
         app.tabBars.buttons.element(boundBy: 1).tap()
-        sleep(2)
+        sleep(3)
         
         XCTAssertTrue(app.staticTexts["userNameLabel"].exists)
         XCTAssertTrue(app.staticTexts["loginLabel"].exists)
@@ -78,7 +78,7 @@ final class ImageFeedUITests: XCTestCase {
         app.buttons["backButton"].tap()
         
         app.alerts["Пока, пока!"].scrollViews.otherElements.buttons["Да"].tap()
-        sleep(2)
+        sleep(3)
         XCTAssertTrue(app.buttons["Authenticate"].exists)
     }
 }

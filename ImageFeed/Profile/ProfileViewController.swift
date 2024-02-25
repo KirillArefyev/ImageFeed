@@ -7,15 +7,18 @@
 
 import Kingfisher
 import UIKit
-import WebKit
 
-final class ProfileViewController: UIViewController {
+protocol ProfileViewControllerProtocol: AnyObject {
+    var presenter: ProfilePresenterProtocol! { get set }
+    var alertPresenter: AlertPresenterProtocol? { get set }
+}
+
+final class ProfileViewController: UIViewController, ProfileViewControllerProtocol {
+    // MARK: - Public Properties
+    var presenter: ProfilePresenterProtocol!
+    var alertPresenter: AlertPresenterProtocol?
     // MARK: - Private Properties
-    private let profileService = ProfileService.shared
-    private let profileImageService = ProfileImageService.shared
-    private let oauth2TokenStorage = OAuth2TokenStorage.shared
     private var profileImageServiceObserver: NSObjectProtocol?
-    private let splashViewController = SplashViewController()
     
     private let userPhotoView: UIImageView = {
         let userPhotoView = UIImageView()
@@ -71,7 +74,9 @@ final class ProfileViewController: UIViewController {
     // MARK: - Overrides Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        updateProfileDetails(profileService.profile)
+        presenter = ProfilePresenter()
+        presenter.view = self
+        alertPresenter = AlertPresenter(delegate: self)
         setupProfileViews()
     }
     // MARK: - Private Methods
@@ -107,55 +112,6 @@ final class ProfileViewController: UIViewController {
         ])
     }
     
-    private func updateProfileDetails(_ profile: Profile?) {
-        guard let profile = profile else { return }
-        self.userNameLabel.text = profile.name
-        self.loginLabel.text = profile.loginName
-        self.descriptionLabel.text = profile.bio
-    }
-    
-    @objc private func didTapExitButton() {
-        erasingSubviews()
-        showAlert()
-    }
-    
-    @objc private func updateAvatar() {
-        guard
-            let profileImageURL = profileImageService.avatarURL,
-            let url = URL(string: profileImageURL)
-        else { return }
-        userPhotoView.kf.indicatorType = .activity
-        userPhotoView.kf.setImage(with: url, placeholder: UIImage(named: "user_stub"))
-    }
-}
-// MARK: - Extensions
-extension ProfileViewController {
-    static func clean() {
-        HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
-        WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
-            records.forEach { record in
-                WKWebsiteDataStore.default().removeData(
-                    ofTypes: record.dataTypes,
-                    for: [record],
-                    completionHandler: { })
-            }
-        }
-    }
-    
-    private func logout() {
-        oauth2TokenStorage.removeToken()
-        Self.clean()
-        returnToAuthenticationScreen()
-    }
-    
-    private func returnToAuthenticationScreen() {
-        DispatchQueue.main.async {
-            if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
-                sceneDelegate.window?.rootViewController?.present(self.splashViewController, animated: true)
-            }
-        }
-    }
-    
     private func erasingSubviews() {
         userPhotoView.image = UIImage(named: "user_stub") ?? UIImage()
         userNameLabel.removeFromSuperview()
@@ -176,27 +132,43 @@ extension ProfileViewController {
         addSubviews()
         applyConstraints()
         updateAvatar()
+        updateProfileDetails(presenter.profileService.profile)
     }
     
-    private func showAlert() {
-        let alert = UIAlertController(
+    private func updateProfileDetails(_ profile: Profile?) {
+        guard let profile = profile else { return }
+        self.userNameLabel.text = profile.name
+        self.loginLabel.text = profile.loginName
+        self.descriptionLabel.text = profile.bio
+    }
+    
+    private func confirmationAlert() {
+        let confirmAlert = ConfirmAlertModel(
             title: "Пока, пока!",
             message: "Уверены, что хотите выйти?",
-            preferredStyle: .alert)
-        let alertActionApprove = UIAlertAction(
-            title: "Да",
-            style: .default) { [weak self] _ in
+            firstButtonText: "Да",
+            secondButtonText: "Нет",
+            firstAction: { [weak self] in
                 guard let self = self else { return }
-                self.logout()
-            }
-        let alertActionCancel = UIAlertAction(
-            title: "Нет",
-            style: .default) { [weak self] _ in
+                self.presenter.logout() },
+            secondAction: { [weak self] in
                 guard let self = self else { return }
                 self.setupProfileViews()
-            }
-        alert.addAction(alertActionApprove)
-        alert.addAction(alertActionCancel)
-        self.present(alert, animated: true)
+            })
+        self.alertPresenter?.showConfirm(confirmAlert)
+    }
+    
+    @objc private func updateAvatar() {
+        guard
+            let profileImageURL = presenter?.profileImageService.avatarURL,
+            let url = URL(string: profileImageURL)
+        else { return }
+        userPhotoView.kf.indicatorType = .activity
+        userPhotoView.kf.setImage(with: url, placeholder: UIImage(named: "user_stub"))
+    }
+    
+    @objc private func didTapExitButton() {
+        erasingSubviews()
+        confirmationAlert()
     }
 }
