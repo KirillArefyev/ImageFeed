@@ -10,15 +10,16 @@ import UIKit
 
 protocol ProfileViewControllerProtocol: AnyObject {
     var presenter: ProfilePresenterProtocol! { get set }
-    var alertPresenter: AlertPresenterProtocol? { get set }
+    
+    func setupAvatar(with url: URL)
+    func setupProfileDetails(_ profile: Profile)
 }
 
 final class ProfileViewController: UIViewController, ProfileViewControllerProtocol {
     // MARK: - Public Properties
-    var presenter: ProfilePresenterProtocol!
-    var alertPresenter: AlertPresenterProtocol?
+    var presenter: ProfilePresenterProtocol! = ProfilePresenter()
     // MARK: - Private Properties
-    private var profileImageServiceObserver: NSObjectProtocol?
+    private var alertPresenter: AlertPresenterProtocol?
     
     private let userPhotoView: UIImageView = {
         let userPhotoView = UIImageView()
@@ -74,10 +75,21 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
     // MARK: - Overrides Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        presenter = ProfilePresenter()
         presenter.view = self
         alertPresenter = AlertPresenter(delegate: self)
-        setupProfileViews()
+        configureSubviews()
+        presenter.updateProfileData()
+    }
+    // MARK: - Public Methods
+    func setupAvatar(with url: URL) {
+        self.userPhotoView.kf.indicatorType = .activity
+        self.userPhotoView.kf.setImage(with: url, placeholder: UIImage(named: "user_stub"))
+    }
+    
+    func setupProfileDetails(_ profile: Profile) {
+        self.userNameLabel.text = profile.name
+        self.loginLabel.text = profile.loginName
+        self.descriptionLabel.text = profile.bio
     }
     // MARK: - Private Methods
     private func addSubviews() {
@@ -119,27 +131,9 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
         descriptionLabel.removeFromSuperview()
     }
     
-    private func setupProfileViews() {
-        profileImageServiceObserver = NotificationCenter.default
-            .addObserver(
-                forName: ProfileImageService.DidChangeNotification,
-                object: nil,
-                queue: .main
-            ) { [weak self] _ in
-                guard let self = self else { return }
-                self.updateAvatar()
-            }
+    private func configureSubviews() {
         addSubviews()
         applyConstraints()
-        updateAvatar()
-        updateProfileDetails(presenter.profileService.profile)
-    }
-    
-    private func updateProfileDetails(_ profile: Profile?) {
-        guard let profile = profile else { return }
-        self.userNameLabel.text = profile.name
-        self.loginLabel.text = profile.loginName
-        self.descriptionLabel.text = profile.bio
     }
     
     private func confirmationAlert() {
@@ -153,18 +147,10 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
                 self.presenter.logout() },
             secondAction: { [weak self] in
                 guard let self = self else { return }
-                self.setupProfileViews()
+                self.configureSubviews()
+                self.presenter.updateProfileData()
             })
         self.alertPresenter?.showConfirm(confirmAlert)
-    }
-    
-    @objc private func updateAvatar() {
-        guard
-            let profileImageURL = presenter?.profileImageService.avatarURL,
-            let url = URL(string: profileImageURL)
-        else { return }
-        userPhotoView.kf.indicatorType = .activity
-        userPhotoView.kf.setImage(with: url, placeholder: UIImage(named: "user_stub"))
     }
     
     @objc private func didTapExitButton() {
