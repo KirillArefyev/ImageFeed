@@ -9,7 +9,7 @@ import Kingfisher
 import UIKit
 
 protocol ImagesListCellDelegate: AnyObject {
-    func imageListCellDidTapLike(_ cell: ImagesListCell)
+    func imagesListCellDidTapLike(_ cell: ImagesListCell)
 }
 
 final class ImagesListCell: UITableViewCell, ImagesListCellProtocol {
@@ -32,7 +32,7 @@ final class ImagesListCell: UITableViewCell, ImagesListCellProtocol {
     }
     // MARK: - IB Actions
     @IBAction private func likeButtonClicked() {
-        delegate?.imageListCellDidTapLike(self)
+        delegate?.imagesListCellDidTapLike(self)
     }
     // MARK: - Methods
     func configurate(with model: ImagesListCellModel) {

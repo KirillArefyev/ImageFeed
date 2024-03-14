@@ -10,23 +10,33 @@ import Foundation
 protocol ImagesListPresenterProtocol {
     var view: ImagesListViewControllerProtocol? { get set }
     var photos: [Photo] { get set }
-    var imagesListService: ImagesListService { get }
+    var imagesListService: ImagesListServiceProtocol { get }
     
     func viewDidLoad()
-    func cellTapLike(_ cell: ImagesListCell)
 }
 
-final class ImagesListPresenter: ImagesListPresenterProtocol {
+final class ImagesListPresenter: ImagesListPresenterProtocol, ImagesListCellDelegate {
     // MARK: - Public Properties
     weak var view: ImagesListViewControllerProtocol?
     var photos: [Photo] = []
-    var imagesListService = ImagesListService.shared
+    var imagesListService: ImagesListServiceProtocol
     // MARK: - Private Properties
     private var imagesListServiceObserver: NSObjectProtocol?
+    
+    init(imagesListService: ImagesListServiceProtocol = ImagesListService.shared) {
+        self.imagesListService = imagesListService
+    }
     // MARK: - Public Methods
     func viewDidLoad() {
-        UIBlockingProgressHUD.show()
-        self.imagesListService.fetchPhotosNextPage(completion: { _ in })
+        imagesListService.fetchPhotosNextPage(completion: { _ in })
+        observeImagesListService()
+    }
+    
+    func imagesListCellDidTapLike(_ cell: ImagesListCell) {
+        view?.setupLike(for: cell)
+    }
+    // MARK: - Private Methods
+    private func observeImagesListService() {
         imagesListServiceObserver = NotificationCenter.default
             .addObserver(
                 forName: ImagesListService.DidChangeNotification,
@@ -35,29 +45,7 @@ final class ImagesListPresenter: ImagesListPresenterProtocol {
             ) { [weak self] _ in
                 guard let self = self else { return }
                 UIBlockingProgressHUD.dismiss()
-                view?.updateTableViewAnimated()
+                self.view?.updateTableViewAnimated()
             }
-    }
-    
-    func cellTapLike(_ cell: ImagesListCell) {
-        guard let indexPath = view?.tableView.indexPath(for: cell) else { return }
-        let photo = photos[indexPath.row]
-        UIBlockingProgressHUD.show()
-        imagesListService.changeLike(photoId: photo.id, isLiked: !photo.isLiked) { [weak self] result in
-            guard let self = self else { return }
-            UIBlockingProgressHUD.dismiss()
-            switch result {
-            case .success:
-                self.photos[indexPath.row].isLiked = !photo.isLiked
-                self.view?.tableView.reloadRows(at: [indexPath], with: .none)
-            case .failure:
-                let errorAlert = ErrorAlertModel(
-                    title: "Что-то пошло не так(",
-                    message: "Попробуйте ещё раз",
-                    buttonText: "ОК",
-                    completion: { })
-                view?.alertPresenter?.showError(errorAlert)
-            }
-        }
     }
 }

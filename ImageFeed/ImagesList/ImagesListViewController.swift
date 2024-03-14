@@ -10,26 +10,26 @@ import UIKit
 
 protocol ImagesListViewControllerProtocol: AnyObject {
     var presenter: ImagesListPresenterProtocol! { get set }
-    var alertPresenter: AlertPresenterProtocol? { get set }
-    var tableView: UITableView! { get set }
     
-    func viewDidLoad()
     func updateTableViewAnimated()
+    func setupLike(for cell: ImagesListCell)
 }
 
-final class ImagesListViewController: UIViewController, ImagesListViewControllerProtocol, ImagesListCellDelegate {
+final class ImagesListViewController: UIViewController, ImagesListViewControllerProtocol {
     // MARK: - IB Outlets
-    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet private weak var tableView: UITableView! {
+        didSet {
+            tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+        }
+    }
     // MARK: - Public Properties
-    var presenter: ImagesListPresenterProtocol!
-    var alertPresenter: AlertPresenterProtocol?
+    var presenter: ImagesListPresenterProtocol! = ImagesListPresenter()
     // MARK: - Private Properties
     private let showSingleImageSegueIdentifer = "ShowSingleImage"
+    private var alertPresenter: AlertPresenterProtocol?
     // MARK: - Overrides Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
-        presenter = ImagesListPresenter()
         presenter.view = self
         alertPresenter = AlertPresenter(delegate: self)
         presenter.viewDidLoad()
@@ -47,8 +47,44 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
         }
     }
     // MARK: - Public Methods
-    func imageListCellDidTapLike(_ cell: ImagesListCell) {
-        presenter.cellTapLike(cell)
+    func setupLike(for cell: ImagesListCell) {
+        guard let indexPath = self.tableView.indexPath(for: cell) else { return }
+        let photo = presenter.photos[indexPath.row]
+        UIBlockingProgressHUD.show()
+        presenter.imagesListService.changeLike(photoId: photo.id, isLiked: !photo.isLiked) { [weak self] result in
+            guard let self = self else { return }
+            UIBlockingProgressHUD.dismiss()
+            switch result {
+            case .success:
+                self.presenter.photos[indexPath.row].isLiked = !photo.isLiked
+                self.tableView.reloadRows(at: [indexPath], with: .none)
+            case .failure:
+                self.setupAndShowErrorAlert()
+            }
+        }
+    }
+    
+    func updateTableViewAnimated() {
+        let oldCount = presenter.photos.count
+        let newCount = presenter.imagesListService.photos.count
+        presenter.photos = presenter.imagesListService.photos
+        if oldCount != newCount {
+            tableView.performBatchUpdates {
+                let indexPaths = (oldCount..<newCount).map { i in
+                    IndexPath(row: i, section: 0)
+                }
+                tableView.insertRows(at: indexPaths, with: .automatic)
+            } completion: { _ in }
+        }
+    }
+    // MARK: - Private Methods
+    private func setupAndShowErrorAlert() {
+        let errorAlert = ErrorAlertModel(
+            title: "Что-то пошло не так(",
+            message: "Попробуйте ещё раз",
+            buttonText: "ОК",
+            completion: { })
+        self.alertPresenter?.showError(errorAlert)
     }
 }
 // MARK: - Extensions
@@ -91,7 +127,7 @@ extension ImagesListViewController: UITableViewDataSource {
             likeImage: favoriteImage,
             date: photo.createdAt?.dateString ?? "")
         cell.configurate(with: cellModel)
-        cell.delegate = self
+        cell.delegate = self.presenter as? ImagesListCellDelegate
     }
 }
 
@@ -100,20 +136,6 @@ extension ImagesListViewController {
         if (indexPath.row + 1) == presenter.photos.count && !ProcessInfo().arguments.contains("testMode") {
             UIBlockingProgressHUD.show()
             presenter.imagesListService.fetchPhotosNextPage(completion: { _ in })
-        }
-    }
-    
-    func updateTableViewAnimated() {
-        let oldCount = presenter.photos.count
-        let newCount = presenter.imagesListService.photos.count
-        presenter.photos = presenter.imagesListService.photos
-        if oldCount != newCount {
-            tableView.performBatchUpdates {
-                let indexPaths = (oldCount..<newCount).map { i in
-                    IndexPath(row: i, section: 0)
-                }
-                tableView.insertRows(at: indexPaths, with: .automatic)
-            } completion: { _ in }
         }
     }
 }

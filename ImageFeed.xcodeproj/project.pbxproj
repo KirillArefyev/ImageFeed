@@ -47,6 +47,10 @@
 		ED87F1B52B42D39A0022EBBC /* URLRequest+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED87F1B42B42D39A0022EBBC /* URLRequest+Extension.swift */; };
 		ED91F7BB2B1D220E00B0981E /* ImagesListCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED91F7BA2B1D220E00B0981E /* ImagesListCellModel.swift */; };
 		ED91F7BD2B1D229D00B0981E /* ImagesListCellProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED91F7BC2B1D229D00B0981E /* ImagesListCellProtocol.swift */; };
+		ED95B5342BA1E54800F5491D /* ImagesListViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED95B5332BA1E54800F5491D /* ImagesListViewTests.swift */; };
+		ED95B5362BA1E5D400F5491D /* ImagesListServiceStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED95B5352BA1E5D400F5491D /* ImagesListServiceStub.swift */; };
+		ED95B5382BA1E5EA00F5491D /* ImagesListPresenterSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED95B5372BA1E5EA00F5491D /* ImagesListPresenterSpy.swift */; };
+		ED95B53A2BA1E60A00F5491D /* ImagesListViewControllerSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED95B5392BA1E60A00F5491D /* ImagesListViewControllerSpy.swift */; };
 		ED9CD7A02B30C8AE0023A5D3 /* ProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED9CD79F2B30C8AE0023A5D3 /* ProfileService.swift */; };
 		ED9CD7A22B30C9380023A5D3 /* ProfileResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED9CD7A12B30C9380023A5D3 /* ProfileResult.swift */; };
 		EDA02DA32B52DDE200D2CEA4 /* ImagesListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA02DA22B52DDE200D2CEA4 /* ImagesListService.swift */; };
@@ -118,6 +122,10 @@
 		ED87F1B42B42D39A0022EBBC /* URLRequest+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLRequest+Extension.swift"; sourceTree = "<group>"; };
 		ED91F7BA2B1D220E00B0981E /* ImagesListCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListCellModel.swift; sourceTree = "<group>"; };
 		ED91F7BC2B1D229D00B0981E /* ImagesListCellProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListCellProtocol.swift; sourceTree = "<group>"; };
+		ED95B5332BA1E54800F5491D /* ImagesListViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListViewTests.swift; sourceTree = "<group>"; };
+		ED95B5352BA1E5D400F5491D /* ImagesListServiceStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListServiceStub.swift; sourceTree = "<group>"; };
+		ED95B5372BA1E5EA00F5491D /* ImagesListPresenterSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListPresenterSpy.swift; sourceTree = "<group>"; };
+		ED95B5392BA1E60A00F5491D /* ImagesListViewControllerSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListViewControllerSpy.swift; sourceTree = "<group>"; };
 		ED9CD79F2B30C8AE0023A5D3 /* ProfileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileService.swift; sourceTree = "<group>"; };
 		ED9CD7A12B30C9380023A5D3 /* ProfileResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileResult.swift; sourceTree = "<group>"; };
 		EDA02DA22B52DDE200D2CEA4 /* ImagesListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListService.swift; sourceTree = "<group>"; };
@@ -306,6 +314,7 @@
 		ED609C672B736DAC00EBF23E /* ImageFeedTests */ = {
 			isa = PBXGroup;
 			children = (
+				ED95B5322BA1E50E00F5491D /* ImagesList */,
 				ED18C04A2B97122B000B328C /* ProfileView */,
 				ED22CD9F2B8B8F1800DD2523 /* WebView */,
 			);
@@ -318,6 +327,17 @@
 				ED7C75132B4559AC005BFC45 /* TabBarController.swift */,
 			);
 			path = TabBar;
+			sourceTree = "<group>";
+		};
+		ED95B5322BA1E50E00F5491D /* ImagesList */ = {
+			isa = PBXGroup;
+			children = (
+				ED95B5352BA1E5D400F5491D /* ImagesListServiceStub.swift */,
+				ED95B5372BA1E5EA00F5491D /* ImagesListPresenterSpy.swift */,
+				ED95B5392BA1E60A00F5491D /* ImagesListViewControllerSpy.swift */,
+				ED95B5332BA1E54800F5491D /* ImagesListViewTests.swift */,
+			);
+			path = ImagesList;
 			sourceTree = "<group>";
 		};
 		EDA02DA62B52FA7A00D2CEA4 /* ImagesListService */ = {
@@ -561,10 +581,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ED95B5342BA1E54800F5491D /* ImagesListViewTests.swift in Sources */,
 				ED18C04E2B971375000B328C /* ProfileViewTests.swift in Sources */,
 				ED609C692B736DAC00EBF23E /* WebViewTests.swift in Sources */,
+				ED95B5362BA1E5D400F5491D /* ImagesListServiceStub.swift in Sources */,
 				EDE2452B2B9B168400F1965F /* ProfileImageServiceStub.swift in Sources */,
+				ED95B5382BA1E5EA00F5491D /* ImagesListPresenterSpy.swift in Sources */,
 				ED609C722B7376E800EBF23E /* WebViewViewControllerSpy.swift in Sources */,
+				ED95B53A2BA1E60A00F5491D /* ImagesListViewControllerSpy.swift in Sources */,
 				EDE245292B9B162E00F1965F /* ProfileServiceStub.swift in Sources */,
 				ED18C0502B97182B000B328C /* ProfilePresenterSpy.swift in Sources */,
 				ED609C702B73751E00EBF23E /* WebViewPresenterSpy.swift in Sources */,
