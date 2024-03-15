@@ -7,15 +7,19 @@
 
 import Kingfisher
 import UIKit
-import WebKit
 
-final class ProfileViewController: UIViewController {
+protocol ProfileViewControllerProtocol: AnyObject {
+    var presenter: ProfilePresenterProtocol! { get set }
+    
+    func setupAvatar(with url: URL)
+    func setupProfileDetails(_ profile: Profile)
+}
+
+final class ProfileViewController: UIViewController, ProfileViewControllerProtocol {
+    // MARK: - Public Properties
+    var presenter: ProfilePresenterProtocol! = ProfilePresenter()
     // MARK: - Private Properties
-    private let profileService = ProfileService.shared
-    private let profileImageService = ProfileImageService.shared
-    private let oauth2TokenStorage = OAuth2TokenStorage.shared
-    private var profileImageServiceObserver: NSObjectProtocol?
-    private let splashViewController = SplashViewController()
+    private var alertPresenter: AlertPresenterProtocol?
     
     private let userPhotoView: UIImageView = {
         let userPhotoView = UIImageView()
@@ -29,6 +33,7 @@ final class ProfileViewController: UIViewController {
     
     private let userNameLabel: UILabel = {
         let userNameLabel = UILabel()
+        userNameLabel.accessibilityIdentifier = "userNameLabel"
         userNameLabel.translatesAutoresizingMaskIntoConstraints = false
         userNameLabel.text = "Екатерина Новикова"
         userNameLabel.textColor = .ifWhite
@@ -38,6 +43,7 @@ final class ProfileViewController: UIViewController {
     
     private let loginLabel: UILabel = {
         let loginLabel = UILabel()
+        loginLabel.accessibilityIdentifier = "loginLabel"
         loginLabel.translatesAutoresizingMaskIntoConstraints = false
         loginLabel.text = "@ekaterina_nov"
         loginLabel.textColor = .ifGray
@@ -63,13 +69,27 @@ final class ProfileViewController: UIViewController {
         )
         exitButton.translatesAutoresizingMaskIntoConstraints = false
         exitButton.tintColor = .ifRed
+        exitButton.accessibilityIdentifier = "backButton"
         return exitButton
     }()
     // MARK: - Overrides Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        updateProfileDetails(profileService.profile)
-        setupProfileViews()
+        presenter.view = self
+        alertPresenter = AlertPresenter(delegate: self)
+        configureSubviews()
+        presenter.updateProfileData()
+    }
+    // MARK: - Public Methods
+    func setupAvatar(with url: URL) {
+        self.userPhotoView.kf.indicatorType = .activity
+        self.userPhotoView.kf.setImage(with: url, placeholder: UIImage(named: "user_stub"))
+    }
+    
+    func setupProfileDetails(_ profile: Profile) {
+        self.userNameLabel.text = profile.name
+        self.loginLabel.text = profile.loginName
+        self.descriptionLabel.text = profile.bio
     }
     // MARK: - Private Methods
     private func addSubviews() {
@@ -104,55 +124,6 @@ final class ProfileViewController: UIViewController {
         ])
     }
     
-    private func updateProfileDetails(_ profile: Profile?) {
-        guard let profile = profile else { return }
-        self.userNameLabel.text = profile.name
-        self.loginLabel.text = profile.loginName
-        self.descriptionLabel.text = profile.bio
-    }
-    
-    @objc private func didTapExitButton() {
-        erasingSubviews()
-        showAlert()
-    }
-    
-    @objc private func updateAvatar() {
-        guard
-            let profileImageURL = profileImageService.avatarURL,
-            let url = URL(string: profileImageURL)
-        else { return }
-        userPhotoView.kf.indicatorType = .activity
-        userPhotoView.kf.setImage(with: url, placeholder: UIImage(named: "user_stub"))
-    }
-}
-// MARK: - Extensions
-extension ProfileViewController {
-    static func clean() {
-        HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
-        WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
-            records.forEach { record in
-                WKWebsiteDataStore.default().removeData(
-                    ofTypes: record.dataTypes,
-                    for: [record],
-                    completionHandler: { })
-            }
-        }
-    }
-    
-    private func logout() {
-        oauth2TokenStorage.removeToken()
-        Self.clean()
-        returnToAuthenticationScreen()
-    }
-    
-    private func returnToAuthenticationScreen() {
-        DispatchQueue.main.async {
-            if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
-                sceneDelegate.window?.rootViewController?.present(self.splashViewController, animated: true)
-            }
-        }
-    }
-    
     private func erasingSubviews() {
         userPhotoView.image = UIImage(named: "user_stub") ?? UIImage()
         userNameLabel.removeFromSuperview()
@@ -160,40 +131,30 @@ extension ProfileViewController {
         descriptionLabel.removeFromSuperview()
     }
     
-    private func setupProfileViews() {
-        profileImageServiceObserver = NotificationCenter.default
-            .addObserver(
-                forName: ProfileImageService.DidChangeNotification,
-                object: nil,
-                queue: .main
-            ) { [weak self] _ in
-                guard let self = self else { return }
-                self.updateAvatar()
-            }
+    private func configureSubviews() {
         addSubviews()
         applyConstraints()
-        updateAvatar()
     }
     
-    private func showAlert() {
-        let alert = UIAlertController(
+    private func confirmationAlert() {
+        let confirmAlert = ConfirmAlertModel(
             title: "Пока, пока!",
             message: "Уверены, что хотите выйти?",
-            preferredStyle: .alert)
-        let alertActionApprove = UIAlertAction(
-            title: "Да",
-            style: .default) { [weak self] _ in
+            firstButtonText: "Да",
+            secondButtonText: "Нет",
+            firstAction: { [weak self] in
                 guard let self = self else { return }
-                self.logout()
-            }
-        let alertActionCancel = UIAlertAction(
-            title: "Нет",
-            style: .default) { [weak self] _ in
+                self.presenter.logout() },
+            secondAction: { [weak self] in
                 guard let self = self else { return }
-                self.setupProfileViews()
-            }
-        alert.addAction(alertActionApprove)
-        alert.addAction(alertActionCancel)
-        self.present(alert, animated: true)
+                self.configureSubviews()
+                self.presenter.updateProfileData()
+            })
+        self.alertPresenter?.showConfirm(confirmAlert)
+    }
+    
+    @objc private func didTapExitButton() {
+        erasingSubviews()
+        confirmationAlert()
     }
 }

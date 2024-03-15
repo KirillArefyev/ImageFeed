@@ -13,48 +13,55 @@ protocol WebViewViewControllerDelegate: AnyObject {
     func webViewViewControllerDidCancel(_ vс: WebViewViewController)
 }
 
-final class WebViewViewController: UIViewController {
+public protocol WebViewViewControllerProtocol: AnyObject {
+    var presenter: WebViewPresenterProtocol? { get set }
+    func load(request: URLRequest)
+    func setProgressValue(_ newValue: Float)
+    func setProgressHidden( _ isHidden: Bool)
+}
+
+final class WebViewViewController: UIViewController, WebViewViewControllerProtocol {
     // MARK: - IB Outlets
     @IBOutlet private weak var webView: WKWebView!
     @IBOutlet private weak var progressView: UIProgressView!
     // MARK: - Public Properties
     weak var delegate: WebViewViewControllerDelegate?
+    var presenter: WebViewPresenterProtocol?
     // MARK: - Private Properties
-    private let unsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
     private var estimateProgressObservation: NSKeyValueObservation?
     // MARK: - Overrides Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         webView.navigationDelegate = self
-        didAuthorize()
-        estimateProgressObservation = webView.observe(
-            \.estimatedProgress,
-             options: [],
-             changeHandler: { [weak self] _, _ in
-                 guard let self = self else { return }
-                 self.updateProgress()
-             })
+        webView.accessibilityIdentifier = "UnsplashWebView"
+        presenter?.viewDidLoad()
+        observeValue()
     }
     // MARK: - IB Actions
     @IBAction private func didTapBackButton(_ sender: UIButton) {
         delegate?.webViewViewControllerDidCancel(self)
     }
-    // MARK: - Private Methods
-    private func updateProgress() {
-        progressView.progress = Float(webView.estimatedProgress)
-        progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
+    // MARK: - Public Methods
+    func setProgressValue(_ newValue: Float) {
+        progressView.progress = newValue
     }
     
-    private func didAuthorize() {
-        var urlComponents = URLComponents(string: unsplashAuthorizeURLString)
-        urlComponents?.queryItems = [
-            URLQueryItem(name: "client_id", value: accessKey),
-            URLQueryItem(name: "redirect_uri", value: redirectUri),
-            URLQueryItem(name: "response_type", value: "code"),
-            URLQueryItem(name: "scope", value: accessScope)]
-        guard let url = urlComponents?.url else { return }
-        let request = URLRequest(url: url)
+    func setProgressHidden( _ isHidden: Bool) {
+        progressView.isHidden = isHidden
+    }
+    
+    func load(request: URLRequest) {
         webView.load(request)
+    }
+    // MARK: - Private Methods
+    private func observeValue() {
+        estimateProgressObservation = webView.observe(
+            \.estimatedProgress,
+             options: [],
+             changeHandler: { [weak self] _, _ in
+                 guard let self = self else { return }
+                 presenter?.didUpdateProgressValue(webView.estimatedProgress)
+             })
     }
 }
 // MARK: - Extensions
@@ -64,25 +71,13 @@ extension WebViewViewController: WKNavigationDelegate {
         decidePolicyFor navigationAction: WKNavigationAction,
         decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
     ) {
-        if let code = code(from: navigationAction) {
+        if 
+            let url = navigationAction.request.url,
+            let code = presenter?.code(from: url) {
             delegate?.webViewViewController(self, didAuthenticateWithCode: code)
             decisionHandler(.cancel)
         } else {
             decisionHandler(.allow)
-        }
-    }
-    
-    private func code(from navigationAction: WKNavigationAction) -> String? {
-        if
-            let url = navigationAction.request.url,
-            let urlComponents = URLComponents(string: url.absoluteString),
-            urlComponents.path == "/oauth/authorize/native",
-            let items = urlComponents.queryItems,
-            let codeItem = items.first(where: { $0.name == "code" })
-        {
-            return codeItem.value
-        } else {
-            return nil
         }
     }
 }
